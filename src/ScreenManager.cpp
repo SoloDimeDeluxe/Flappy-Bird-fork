@@ -6,6 +6,7 @@
 #include "ScreenMenu.h"
 #include "ScreenCredits.h"
 #include "ScreenExit.h"
+#include "Parallax.h"
 
 namespace rd
 {
@@ -17,9 +18,11 @@ namespace rd
 		{
 		case Screen::Menu:
 			MenuInit();
+			ParallaxInit();
 			break;
 		case Screen::Play:
 			ObstacleUpdate(delta);
+			ParallaxUpdate(delta);
 			PlayerUpdate(delta);
 			break;
 		case Screen::Rules:
@@ -41,7 +44,7 @@ namespace rd
 		}
 	}
 
-	void Draw(Font font)
+	void Draw(Font font, Texture2D foreground, Texture2D middleGround, Texture2D background)
 	{
 		BeginDrawing();
 
@@ -51,6 +54,7 @@ namespace rd
 			MenuDraw(font);
 			break;
 		case Screen::Play:
+			ParallaxDraw(foreground, middleGround, background);
 			PlayerDraw();
 			ObstacleDraw();
 			break;

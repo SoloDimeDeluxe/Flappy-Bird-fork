@@ -18,5 +18,6 @@ namespace rd
 	extern Screen currentScreen;
 
 	void Update(float delta, bool& gameIsRunning);
-	void Draw(Font font);
+	void Draw(Font font, Texture2D foreground, 
+		Texture2D middleGround, Texture2D background);
 }

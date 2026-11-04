@@ -45,7 +45,7 @@
     <ClCompile Include="src\ScreenExit.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Parallax.cpp">
+    <ClCompile Include="src\Parallax.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +77,7 @@
     <ClInclude Include="src\ScreenExit.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Parallax.h">
+    <ClInclude Include="src\Parallax.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

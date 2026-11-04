@@ -34,7 +34,7 @@ namespace rd
 			deltaTime = GetFrameTime();
 
 			Update(deltaTime, gameIsRunning);
-			Draw(font);
+			Draw(font, foreground, middleGround, background);
 		}
 
 		UnloadFont(font);
