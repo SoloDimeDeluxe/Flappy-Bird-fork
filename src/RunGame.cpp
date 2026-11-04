@@ -16,7 +16,14 @@ namespace rd
 		float deltaTime = 0;
 
 		InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Flappy Bird");
+		
+		//FONTS
 		Font font = LoadFont("res/font/Muroslant.otf");
+
+		//IMAGES
+		Texture2D foreground = LoadTexture("res/Background/Parallax/farm_forward");
+		Texture2D middleGround = LoadTexture("res/Background/Parallax/mountain_middle");
+		Texture2D background = LoadTexture("res/Background/Parallax/sky_back");
 
 		PlayerInit();
 		ObstacleInit();
