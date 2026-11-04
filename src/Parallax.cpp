@@ -17,14 +17,14 @@ namespace rd
 		sky.offset = 0.0f;
 
 		mountain.position.x = 0;
-		mountain.position.y = 300;
+		mountain.position.y = 310;
 		mountain.offset = 0.0f;
 		mountain.texture.width = 0;
 		mountain.texture.height = 0;
 		mountain.offset = 0.0f;
 
 		farm.position.x = 0;
-		farm.position.y = 490;
+		farm.position.y = 290;
 		farm.offset = 0.0f;
 		farm.texture.width = 0;
 		farm.texture.height = 0;
