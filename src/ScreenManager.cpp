@@ -56,8 +56,9 @@ namespace rd
 			break;
 		case Screen::Play:
 			ParallaxDraw(foreground, middleGround, background);
-			PlayerDraw();
+			PlayerDraw(font);
 			ObstacleDraw();
+			PlayerControlsDraw(font); //DESPUES DE LOS CANIOS PARA QUE NO LOS TAPEN
 			BackButtonDraw(); //SE DIBUJA ULTIMO PARA QUE QUEDE ARRIBA DE TODO
 			break;
 		case Screen::Rules:

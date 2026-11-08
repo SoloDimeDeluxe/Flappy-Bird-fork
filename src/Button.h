@@ -14,6 +14,7 @@ namespace rd
 	};
 
 	extern Button play;
+	extern Button playTwo;
 	extern Button credits;
 	extern Button exit;
 	extern Button back;

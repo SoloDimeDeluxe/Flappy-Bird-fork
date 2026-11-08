@@ -7,6 +7,8 @@
 namespace rd
 {
 	Player bird;
+	Player birdTwo;
+	bool isTwoPlayers = false;
 
 	void PlayerInit()
 	{
@@ -22,48 +24,107 @@ namespace rd
 		bird.velocity = 300.0f;
 		bird.jumpForce = -200.0f;
 		bird.isAlive = true;
+		bird.jumpKey = KEY_SPACE;
+		bird.color = ORANGE;
 
 		bird.textPosition.x = 1200;
 		bird.textPosition.y = 670; //DENTRO DE LA VENTANA (ALTO 720)
 		bird.fontSize = 40;
 		bird.spacing = 1;
+
+		//JUGADOR 2: ARRANCA IGUAL QUE EL 1 PERO MAS ARRIBA, CON OTRA TECLA Y OTRO COLOR
+		birdTwo = bird;
+		birdTwo.position.y = 250;
+		birdTwo.jumpKey = KEY_UP;
+		birdTwo.color = PURPLE;
+		birdTwo.isAlive = isTwoPlayers; //EN MODO 1 JUGADOR NO PARTICIPA
 	}
 
 	void PlayerUpdate(float delta)
 	{
-		if (IsKeyPressed(KEY_SPACE))
+		if (bird.isAlive)
 		{
-			bird.velocity = bird.jumpForce;
+			PlayerMovement(bird, delta);
 		}
-
-		//VELOCITY:
-		bird.velocity += GRAVITY * delta;
-		bird.position.y += delta * bird.velocity;
-
-		if (bird.position.y + bird.radius > WINDOW_HEIGHT)
+		if (birdTwo.isAlive)
 		{
-			bird.isAlive = false;
-			bird.position.y = WINDOW_HEIGHT - bird.radius;
-		}
-		else if (bird.position.y - bird.radius < 0)
-		{
-			bird.velocity = 0;
-			bird.position.y = 0 + bird.radius;
+			PlayerMovement(birdTwo, delta);
 		}
 
 		isPlayerAlive();
 	}
 
-	void PlayerDraw()
+	void PlayerMovement(Player& player, float delta)
 	{
-		DrawRectangleV(bird.position, bird.size, ORANGE); // x, y, width, height, color
+		if (IsKeyPressed(player.jumpKey))
+		{
+			player.velocity = player.jumpForce;
+		}
+
+		//VELOCITY:
+		player.velocity += GRAVITY * delta;
+		player.position.y += delta * player.velocity;
+
+		//PISO Y TECHO SEGUN EL TAMANIO DEL RECTANGULO
+		if (player.position.y + player.size.y > WINDOW_HEIGHT)
+		{
+			player.isAlive = false;
+			player.position.y = WINDOW_HEIGHT - player.size.y;
+		}
+		else if (player.position.y < 0)
+		{
+			player.velocity = 0;
+			player.position.y = 0;
+		}
+
+		if (CheckRectangleCollision(player.position, player.size, pipeOne.position, pipeOne.size) ||
+			CheckRectangleCollision(player.position, player.size, pipeTwo.position, pipeTwo.size))
+		{
+			player.isAlive = false;
+		}
+	}
+
+	void PlayerDraw(Font font)
+	{
+		//SOLO SE DIBUJAN LOS JUGADORES QUE SIGUEN VIVOS
+		if (bird.isAlive)
+		{
+			DrawRectangleV(bird.position, bird.size, bird.color); // x, y, width, height, color
+		}
+
+		if (isTwoPlayers)
+		{
+			//ETIQUETAS ARRIBA DE CADA JUGADOR PARA SABER QUIEN ES QUIEN
+			if (bird.isAlive)
+			{
+				DrawTextEx(font, "P1", { bird.position.x + 12, bird.position.y - 30 }, 30, 1, bird.color);
+			}
+			if (birdTwo.isAlive)
+			{
+				DrawRectangleV(birdTwo.position, birdTwo.size, birdTwo.color);
+				DrawTextEx(font, "P2", { birdTwo.position.x + 10, birdTwo.position.y - 30 }, 30, 1, birdTwo.color);
+			}
+		}
+	}
+
+	void PlayerControlsDraw(Font font)
+	{
+		//CONTROLES EN PANTALLA ARRIBA AL CENTRO
+		if (isTwoPlayers)
+		{
+			DrawTextEx(font, "P1: SPACE", { 480, 10 }, 30, 1, bird.color);
+			DrawTextEx(font, "P2: UP ARROW", { 630, 10 }, 30, 1, birdTwo.color);
+		}
+		else
+		{
+			DrawTextEx(font, "SPACE: JUMP", { 562, 10 }, 30, 1, BLACK);
+		}
 	}
 
 	void isPlayerAlive()
 	{
-		if (CheckRectangleCollision(bird.position, bird.size, pipeOne.position, pipeOne.size) ||
-			CheckRectangleCollision(bird.position, bird.size, pipeTwo.position, pipeTwo.size) ||
-			!bird.isAlive)
+		//LA PARTIDA SE REINICIA CUANDO NO QUEDA NINGUN JUGADOR VIVO
+		if (!bird.isAlive && !birdTwo.isAlive)
 		{
 			PlayerInit();
 			ObstacleInit();
