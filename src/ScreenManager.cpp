@@ -24,6 +24,7 @@ namespace rd
 			ObstacleUpdate(delta);
 			ParallaxUpdate(delta);
 			PlayerUpdate(delta);
+			IsMousePressingBackButton(); //VOLVER AL MENU
 			break;
 		case Screen::Rules:
 			break;
@@ -57,6 +58,7 @@ namespace rd
 			ParallaxDraw(foreground, middleGround, background);
 			PlayerDraw();
 			ObstacleDraw();
+			BackButtonDraw(); //SE DIBUJA ULTIMO PARA QUE QUEDE ARRIBA DE TODO
 			break;
 		case Screen::Rules:
 			break;

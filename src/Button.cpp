@@ -1,6 +1,8 @@
 #include "Button.h"
 #include "ScreenManager.h"
 #include "raylib.h"
+#include "Player.h"
+#include "Obstacle.h"
 
 namespace rd
 {
@@ -81,6 +83,9 @@ namespace rd
 			if (CheckCollisionMouseButton(mousePosition, play.position.x, 
 				play.position.y, play.size.y, play.size.x))
 			{
+				//REINICIA LA PARTIDA CADA VEZ QUE SE ENTRA A JUGAR
+				PlayerInit();
+				ObstacleInit();
 				currentScreen = Screen::Play;
 			}
 			else if (CheckCollisionMouseButton(mousePosition, credits.position.x, 
