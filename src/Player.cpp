@@ -24,7 +24,7 @@ namespace rd
 		bird.isAlive = true;
 
 		bird.textPosition.x = 1200;
-		bird.textPosition.y = 730;
+		bird.textPosition.y = 670; //DENTRO DE LA VENTANA (ALTO 720)
 		bird.fontSize = 40;
 		bird.spacing = 1;
 	}
