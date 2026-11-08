@@ -13,7 +13,7 @@ namespace rd
 
 	void MenuDraw(Font font)
 	{
-		DrawTextEx(font, TextFormat("v0.3"), bird.textPosition, bird.fontSize, bird.spacing, BLACK);
+		DrawTextEx(font, TextFormat("v0.4"), bird.textPosition, bird.fontSize, bird.spacing, BLACK);
 		ButtonDraw();
 		ButtonTextDraw(font);
 	}

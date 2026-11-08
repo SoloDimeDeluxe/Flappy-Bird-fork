@@ -11,6 +11,7 @@ namespace rd
 	};
 
 	extern Credits name;
+	extern Credits nameTwo;
 	extern Credits tittleGameDev;
 
 	void CreditsInit();
