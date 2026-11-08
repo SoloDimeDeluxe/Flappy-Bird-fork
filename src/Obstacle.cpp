@@ -12,15 +12,16 @@ namespace rd
 
 	void ObstacleInit()
 	{
+		//SE LES DA ALTURA AL AZAR DESDE EL ARRANQUE PARA QUE LA PRIMERA PASADA SE VEA
 		pipeOne.position.x = WINDOW_WIDTH;
-		pipeOne.position.y = 0;
+		pipeOne.position.y = static_cast<float>(rand() % (700 - 200 + 1) + 200);
 		pipeOne.size.x = 80;
-		pipeOne.size.y = 0;
+		pipeOne.size.y = WINDOW_HEIGHT - pipeOne.position.y;
 
 		pipeTwo.position.x = WINDOW_WIDTH;
 		pipeTwo.position.y = 0;
 		pipeTwo.size.x = 80;
-		pipeTwo.size.y = 0;
+		pipeTwo.size.y = (pipeOne.position.y - 200);
 	}
 
 	void ObstacleUpdate(float delta)
