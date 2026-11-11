@@ -65,7 +65,7 @@ namespace rd
 		back.spacing = 2;
 	}
 
-	bool CheckCollisionMouseButton(Vector2 mousePosition, float buttonX, 
+	bool CheckCollisionMouseButton(Vector2 mousePosition, float buttonX,
 		float buttonY, float buttonHeight, float buttonWidth)
 	{
 		return buttonX <= mousePosition.x && buttonX + buttonWidth >= mousePosition.x
@@ -91,13 +91,14 @@ namespace rd
 
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
-			if (CheckCollisionMouseButton(mousePosition, play.position.x, 
+			if (CheckCollisionMouseButton(mousePosition, play.position.x,
 				play.position.y, play.size.y, play.size.x))
 			{
 				//REINICIA LA PARTIDA CADA VEZ QUE SE ENTRA A JUGAR
 				isTwoPlayers = false;
 				PlayerInit();
 				ObstacleInit();
+				startDelay = START_DELAY; //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
 			else if (CheckCollisionMouseButton(mousePosition, playTwo.position.x,
@@ -107,9 +108,10 @@ namespace rd
 				isTwoPlayers = true;
 				PlayerInit();
 				ObstacleInit();
+				startDelay = START_DELAY; //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
-			else if (CheckCollisionMouseButton(mousePosition, credits.position.x, 
+			else if (CheckCollisionMouseButton(mousePosition, credits.position.x,
 				credits.position.y, credits.size.y, credits.size.x))
 			{
 				currentScreen = Screen::Credits;
@@ -143,7 +145,7 @@ namespace rd
 		DrawRectangleV(credits.position, credits.size, ORANGE);
 		DrawRectangleV(exit.position, exit.size, ORANGE);
 
-		if (CheckCollisionMouseButton(mousePosition, play.position.x, 
+		if (CheckCollisionMouseButton(mousePosition, play.position.x,
 			play.position.y, play.size.y, play.size.x))
 		{
 			DrawRectangleV(play.position, play.size, YELLOW);
@@ -153,7 +155,7 @@ namespace rd
 		{
 			DrawRectangleV(playTwo.position, playTwo.size, YELLOW);
 		}
-		else if (CheckCollisionMouseButton(mousePosition, credits.position.x, 
+		else if (CheckCollisionMouseButton(mousePosition, credits.position.x,
 			credits.position.y, credits.size.y, credits.size.x))
 		{
 			DrawRectangleV(credits.position, credits.size, YELLOW);
