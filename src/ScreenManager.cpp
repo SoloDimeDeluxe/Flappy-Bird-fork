@@ -7,6 +7,7 @@
 #include "ScreenCredits.h"
 #include "ScreenExit.h"
 #include "Parallax.h"
+#include "ScreenGameOver.h"
 
 namespace rd
 {
@@ -39,6 +40,7 @@ namespace rd
 		case Screen::Pause:
 			break;
 		case Screen::GameOver:
+			GameOverInit();
 			break;
 		default:
 			break;
@@ -73,6 +75,10 @@ namespace rd
 		case Screen::Pause:
 			break;
 		case Screen::GameOver:
+			//SE DIBUJA EL JUEGO QUIETO DE FONDO Y EL CARTEL ENCIMA
+			ParallaxDraw(foreground, middleGround, background);
+			ObstacleDraw();
+			GameOverDraw(font);
 			break;
 		default:
 			break;

@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;C:\Users\Aula 1\Desktop\Flappy-Bird-fork\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -147,7 +147,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;C:\Users\Aula 1\Desktop\Flappy-Bird-fork\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -168,6 +168,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ScreenGameOver.cpp" />
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -181,6 +182,7 @@
     <ClCompile Include="src\ScreenMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ScreenGameOver.h" />
     <ClInclude Include="src\Button.h" />
     <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\Obstacle.h" />

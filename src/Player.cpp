@@ -3,6 +3,7 @@
 #include "RunGame.h"
 #include "Obstacle.h"
 #include "Collision.h"
+#include "ScreenManager.h"
 
 namespace rd
 {
@@ -123,11 +124,10 @@ namespace rd
 
 	void isPlayerAlive()
 	{
-		//LA PARTIDA SE REINICIA CUANDO NO QUEDA NINGUN JUGADOR VIVO
+		//CUANDO NO QUEDA NINGUN JUGADOR VIVO SE PASA A LA PANTALLA DE GAME OVER
 		if (!bird.isAlive && !birdTwo.isAlive)
 		{
-			PlayerInit();
-			ObstacleInit();
+			currentScreen = Screen::GameOver;
 		}
 	}
 }
