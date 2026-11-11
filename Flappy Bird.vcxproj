@@ -132,7 +132,7 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)res" "$(OutDir)res" /E /I /Y /D</Command>
+      <Command>call "$(SolutionDir)utils\post_build.bat" "$(SolutionDir)" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy res folder next to the exe</Message>
@@ -161,7 +161,7 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>xcopy "$(SolutionDir)res" "$(OutDir)res" /E /I /Y /D</Command>
+      <Command>call "$(SolutionDir)utils\post_build.bat" "$(SolutionDir)" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy res folder next to the exe</Message>
