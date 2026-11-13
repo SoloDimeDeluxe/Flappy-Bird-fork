@@ -5,6 +5,7 @@
 #include "ScreenManager.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "Parallax.h"
 
 namespace rd
 {
@@ -25,6 +26,11 @@ namespace rd
 		Texture2D middleGround = LoadTexture("res/Background/Parallax/mountain_middle.png");
 		Texture2D background = LoadTexture("res/Background/Parallax/sky_back.png");
 
+		//SE GUARDAN LAS TEXTURAS EN CADA CAPA PARA QUE EL LOOP USE SU ANCHO
+		sky.texture = background;
+		mountain.texture = middleGround;
+		farm.texture = foreground;
+
 		PlayerInit();
 		ObstacleInit();
 
@@ -38,6 +44,9 @@ namespace rd
 		}
 
 		UnloadFont(font);
+		UnloadTexture(foreground);
+		UnloadTexture(middleGround);
+		UnloadTexture(background);
 
 		CloseWindow();
 	}
