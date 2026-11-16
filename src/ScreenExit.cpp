@@ -1,5 +1,5 @@
 #include "ScreenExit.h"
-#include "raylib.h"
+
 #include "ScreenManager.h"
 
 namespace rd

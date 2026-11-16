@@ -1,68 +1,59 @@
 #include "Button.h"
+
 #include "ScreenManager.h"
-#include "raylib.h"
 #include "Player.h"
 #include "Obstacle.h"
+#include "GameAudio.h"
 
 namespace rd
 {
-	Button play;
-	Button playTwo;
-	Button credits;
-	Button exit;
-	Button back;
+	static const float MENU_BUTTON_WIDTH = 280.0f;
+	static const float MENU_BUTTON_HEIGHT = 80.0f;
+	static const float MENU_BUTTON_TEXT_OFFSET_Y = 15.0f;
+	static const float MENU_BUTTON_TEXT_SIZE = 40.0f;
+	static const float MENU_BUTTON_FONT_SIZE = 60.0f;
+	static const float MENU_BUTTON_SPACING = 2.0f;
+	static const float FIRST_MENU_BUTTON_POSITION_Y = 230.0f;
+
+	//PARA QUE EL TEXTO QUEDE CENTRADO EN CADA BOTON
+	static const float PLAY_TEXT_OFFSET_X = 30.0f;
+	static const float PLAY_TWO_TEXT_OFFSET_X = 13.0f;
+	static const float CREDITS_TEXT_OFFSET_X = 45.0f;
+	static const float EXIT_TEXT_OFFSET_X = 90.0f;
+
+	static const float BACK_BUTTON_SIZE = 70.0f;
+	static const float ARROW_MARGIN = 18.0f;
+
+	static Button play;
+	static Button playTwo;
+	static Button credits;
+	static Button exit;
+	static Button back;
 
 	void ButtonInit()
 	{
-		play.position.x = 530;
-		play.position.y = 230;
-		play.textPosition.x = 560;
-		play.textPosition.y = 245;
-		play.textSize = 40;
-		play.size.y = 80; //height
-		play.size.x = 280; //width
-		play.fontSize = 60;
-		play.spacing = 2;
-
-		playTwo.position.x = 530;
-		playTwo.position.y = 330;
-		playTwo.textPosition.x = 543;
-		playTwo.textPosition.y = 345;
-		playTwo.textSize = 40;
-		playTwo.size.y = 80;
-		playTwo.size.x = 280;
-		playTwo.fontSize = 60;
-		playTwo.spacing = 2;
-
-		credits.position.x = 530;
-		credits.position.y = 430;
-		credits.textPosition.x = 575;
-		credits.textPosition.y = 445;
-		credits.textSize = 40;
-		credits.size.y = 80;
-		credits.size.x = 280;
-		credits.fontSize = 60;
-		credits.spacing = 2;
-
-		exit.position.x = 530;
-		exit.position.y = 530;
-		exit.textPosition.x = 620;
-		exit.textPosition.y = 545;
-		exit.textSize = 40;
-		exit.size.y = 80;
-		exit.size.x = 280;
-		exit.fontSize = 60;
-		exit.spacing = 2;
+		ButtonSetup(play, FIRST_MENU_BUTTON_POSITION_Y, PLAY_TEXT_OFFSET_X);
+		ButtonSetup(playTwo, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION, PLAY_TWO_TEXT_OFFSET_X);
+		ButtonSetup(credits, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 2, CREDITS_TEXT_OFFSET_X);
+		ButtonSetup(exit, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 3, EXIT_TEXT_OFFSET_X);
 
 		back.position.x = 0;
 		back.position.y = 0;
-		back.size.y = 70;
-		back.size.x = 70;
-		back.textPosition.x = -40;
-		back.textPosition.y = -20;
-		back.textSize = 20;
-		back.fontSize = 30;
-		back.spacing = 2;
+		back.size.x = BACK_BUTTON_SIZE;
+		back.size.y = BACK_BUTTON_SIZE;
+	}
+
+	void ButtonSetup(Button& button, float positionY, float textOffsetX)
+	{
+		button.position.x = MENU_BUTTON_POSITION_X;
+		button.position.y = positionY;
+		button.textPosition.x = MENU_BUTTON_POSITION_X + textOffsetX;
+		button.textPosition.y = positionY + MENU_BUTTON_TEXT_OFFSET_Y;
+		button.textSize = MENU_BUTTON_TEXT_SIZE;
+		button.size.y = MENU_BUTTON_HEIGHT; //height
+		button.size.x = MENU_BUTTON_WIDTH; //width
+		button.fontSize = MENU_BUTTON_FONT_SIZE;
+		button.spacing = MENU_BUTTON_SPACING;
 	}
 
 	bool CheckCollisionMouseButton(Vector2 mousePosition, float buttonX,
@@ -70,19 +61,6 @@ namespace rd
 	{
 		return buttonX <= mousePosition.x && buttonX + buttonWidth >= mousePosition.x
 			&& mousePosition.y >= buttonY && mousePosition.y <= buttonY + buttonHeight;
-	}
-
-	void IsMousePressingBackButton()
-	{
-		Vector2 mousePosition = GetMousePosition();
-
-		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-		{
-			if (CheckCollisionMouseButton(mousePosition, back.position.x, back.position.y, back.size.y, back.size.x))
-			{
-				currentScreen = Screen::Menu;
-			}
-		}
 	}
 
 	void IsMousePressed()
@@ -95,30 +73,47 @@ namespace rd
 				play.position.y, play.size.y, play.size.x))
 			{
 				//REINICIA LA PARTIDA CADA VEZ QUE SE ENTRA A JUGAR
+				PlaySound(gameAudio.click);
 				isTwoPlayers = false;
 				PlayerInit();
 				ObstacleInit();
-				startDelay = START_DELAY; //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
+				CountdownStart(); //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
 			else if (CheckCollisionMouseButton(mousePosition, playTwo.position.x,
 				playTwo.position.y, playTwo.size.y, playTwo.size.x))
 			{
 				//MODO 2 JUGADORES (SE SETEA ANTES DEL INIT PORQUE EL INIT LO USA)
+				PlaySound(gameAudio.click);
 				isTwoPlayers = true;
 				PlayerInit();
 				ObstacleInit();
-				startDelay = START_DELAY; //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
+				CountdownStart(); //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
 			else if (CheckCollisionMouseButton(mousePosition, credits.position.x,
 				credits.position.y, credits.size.y, credits.size.x))
 			{
+				PlaySound(gameAudio.click);
 				currentScreen = Screen::Credits;
 			}
 			else if (CheckCollisionMouseButton(mousePosition, exit.position.x, exit.position.y, exit.size.y, exit.size.x))
 			{
 				currentScreen = Screen::Exit;
+			}
+		}
+	}
+
+	void IsMousePressingBackButton()
+	{
+		Vector2 mousePosition = GetMousePosition();
+
+		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+		{
+			if (CheckCollisionMouseButton(mousePosition, back.position.x, back.position.y, back.size.y, back.size.x))
+			{
+				PlaySound(gameAudio.click);
+				currentScreen = Screen::Menu;
 			}
 		}
 	}
@@ -133,6 +128,12 @@ namespace rd
 		{
 			DrawRectangleV(back.position, back.size, YELLOW);
 		}
+
+		//FLECHA (RAYLIB PIDE LOS VERTICES EN SENTIDO ANTIHORARIO)
+		Vector2 arrowTop = { back.position.x + back.size.x - ARROW_MARGIN, back.position.y + ARROW_MARGIN };
+		Vector2 arrowTip = { back.position.x + ARROW_MARGIN, back.position.y + back.size.y / 2 };
+		Vector2 arrowBottom = { back.position.x + back.size.x - ARROW_MARGIN, back.position.y + back.size.y - ARROW_MARGIN };
+		DrawTriangle(arrowTop, arrowTip, arrowBottom, WHITE);
 	}
 
 	void ButtonDraw()

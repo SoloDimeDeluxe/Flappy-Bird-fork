@@ -1,27 +1,29 @@
 #include "Obstacle.h"
-#include <ctime>
+
 #include <cstdlib>
-#include "raylib.h"
+
 #include "RunGame.h"
-#include "Player.h"
 
 namespace rd
 {
+	static const int MIN_PIPE_HEIGHT = 200;
+	static const int MAX_PIPE_HEIGHT = 700;
+	static const float PIPE_GAP = 200.0f; //HUECO ENTRE LOS DOS CANIOS
+	static const float PIPE_WIDTH = 80.0f;
+
 	Obstacle pipeOne;
 	Obstacle pipeTwo;
 
+	static float GetRandomPipeHeight();
+	static void PipeRespawn();
+
 	void ObstacleInit()
 	{
-		//SE LES DA ALTURA AL AZAR DESDE EL ARRANQUE PARA QUE LA PRIMERA PASADA SE VEA
-		pipeOne.position.x = WINDOW_WIDTH;
-		pipeOne.position.y = static_cast<float>(rand() % (700 - 200 + 1) + 200);
-		pipeOne.size.x = 80;
-		pipeOne.size.y = WINDOW_HEIGHT - pipeOne.position.y;
+		pipeOne.size.x = PIPE_WIDTH;
+		pipeTwo.size.x = PIPE_WIDTH;
 
-		pipeTwo.position.x = WINDOW_WIDTH;
-		pipeTwo.position.y = 0;
-		pipeTwo.size.x = 80;
-		pipeTwo.size.y = (pipeOne.position.y - 200);
+		//ALTURA AL AZAR DESDE EL ARRANQUE PARA QUE EL PRIMERO SE VEA
+		PipeRespawn();
 	}
 
 	void ObstacleUpdate(float delta)
@@ -29,24 +31,35 @@ namespace rd
 		pipeOne.position.x -= delta * MAX_OBSTACLE_SPEED;
 		pipeTwo.position.x -= delta * MAX_OBSTACLE_SPEED;
 
+		//CUANDO SALE POR LA IZQUIERDA VUELVE POR LA DERECHA A OTRA ALTURA
 		if (pipeOne.position.x + pipeOne.size.x < 0)
 		{
-			pipeOne.position.y = static_cast<float>(rand() % (700 - 200 + 1) + 200);
-			pipeOne.size.y = WINDOW_HEIGHT - pipeOne.position.y;
-			pipeOne.position.x = WINDOW_WIDTH;
+			PipeRespawn();
 		}
-		if (pipeTwo.position.x + pipeTwo.size.x < 0)
-		{
-			pipeTwo.position.y = 0.0f;
-			pipeTwo.size.y = (pipeOne.position.y - 200);
-			pipeTwo.position.x = WINDOW_WIDTH;
-		}
-
 	}
 
 	void ObstacleDraw()
 	{
 		DrawRectangleV(pipeOne.position, pipeOne.size, RED);
 		DrawRectangleV(pipeTwo.position, pipeTwo.size, RED);
+	}
+
+	static float GetRandomPipeHeight()
+	{
+		return static_cast<float>(rand() % (MAX_PIPE_HEIGHT - MIN_PIPE_HEIGHT + 1) + MIN_PIPE_HEIGHT);
+	}
+
+	static void PipeRespawn()
+	{
+		//CANIO DE ABAJO
+		pipeOne.position.x = WINDOW_WIDTH;
+		pipeOne.position.y = GetRandomPipeHeight();
+		pipeOne.size.y = WINDOW_HEIGHT - pipeOne.position.y;
+		pipeOne.isPassed = false;
+
+		//CANIO DE ARRIBA
+		pipeTwo.position.x = WINDOW_WIDTH;
+		pipeTwo.position.y = 0.0f;
+		pipeTwo.size.y = pipeOne.position.y - PIPE_GAP;
 	}
 }

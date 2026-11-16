@@ -1,13 +1,10 @@
 #pragma once
+
 #include "raylib.h"
-#include "Button.h"
 
 namespace rd
 {
-	extern Button continueGame;
-	extern Button backToMenu;
-	extern Vector2 gameOverTextPosition;
-
-	void GameOverInit();
+	void GameOverStart();
+	void GameOverInit(float delta);
 	void GameOverDraw(Font font);
 }

@@ -1,12 +1,21 @@
 #include "Parallax.h"
-#include "raylib.h"
+
 #include "RunGame.h"
 
 namespace rd
 {
+	//LAS CAPAS MAS LEJANAS VAN MAS LENTO
+	static const float SKY_SPEED = 10.0f;
+	static const float MOUNTAIN_SPEED = 25.0f;
+	static const float FARM_SPEED = 50.0f;
+	static const float MOUNTAIN_POSITION_Y = 310.0f;
+	static const float FARM_POSITION_Y = 290.0f;
+
 	Parallax sky;
 	Parallax mountain;
 	Parallax farm;
+
+	static void ParallaxDrawMovement(Texture2D texture, Vector2 position, float offset);
 
 	void ParallaxInit()
 	{
@@ -15,34 +24,34 @@ namespace rd
 		sky.offset = 0.0f;
 
 		mountain.position.x = 0;
-		mountain.position.y = 310;
+		mountain.position.y = MOUNTAIN_POSITION_Y;
 		mountain.offset = 0.0f;
 
 		farm.position.x = 0;
-		farm.position.y = 290;
+		farm.position.y = FARM_POSITION_Y;
 		farm.offset = 0.0f;
 	}
 
 	void ParallaxUpdate(float delta)
 	{
-		sky.offset -= 10 * delta;
-		mountain.offset -= 25 * delta;
-		farm.offset -= 50 * delta;
+		sky.offset -= SKY_SPEED * delta;
+		mountain.offset -= MOUNTAIN_SPEED * delta;
+		farm.offset -= FARM_SPEED * delta;
 
 		//EL LOOP SE REINICIA CADA 2 IMAGENES (UNA NORMAL Y UNA ESPEJADA)
-		if (sky.offset <= -sky.texture.width * 2)
+		if (sky.offset <= -static_cast<float>(sky.texture.width * 2))
 		{
-			sky.offset += sky.texture.width * 2;
+			sky.offset += static_cast<float>(sky.texture.width * 2);
 		}
 
-		if (mountain.offset <= -mountain.texture.width * 2)
+		if (mountain.offset <= -static_cast<float>(mountain.texture.width * 2))
 		{
-			mountain.offset += mountain.texture.width * 2;
+			mountain.offset += static_cast<float>(mountain.texture.width * 2);
 		}
 
-		if (farm.offset <= -farm.texture.width * 2)
+		if (farm.offset <= -static_cast<float>(farm.texture.width * 2))
 		{
-			farm.offset += farm.texture.width * 2;
+			farm.offset += static_cast<float>(farm.texture.width * 2);
 		}
 	}
 
@@ -54,7 +63,7 @@ namespace rd
 		ParallaxDrawMovement(foreground, farm.position, farm.offset);
 	}
 
-	void ParallaxDrawMovement(Texture2D texture, Vector2 position, float offset)
+	static void ParallaxDrawMovement(Texture2D texture, Vector2 position, float offset)
 	{
 		float auxX = position.x + offset;
 		bool isMirrored = false;
@@ -74,7 +83,7 @@ namespace rd
 			}
 
 			isMirrored = !isMirrored;
-			auxX += texture.width;
+			auxX += static_cast<float>(texture.width);
 		}
 	}
 }

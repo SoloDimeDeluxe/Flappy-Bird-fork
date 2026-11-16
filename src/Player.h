@@ -1,4 +1,5 @@
 #pragma once
+
 #include "raylib.h"
 
 namespace rd
@@ -14,11 +15,16 @@ namespace rd
 		float velocity = 0.0f;
 		float jumpForce = 0.0f;
 		bool isAlive = true;
-		Vector2 textPosition = { 0,0 };
-		float fontSize = 0.0f;
-		float spacing = 0.0f;
 		int jumpKey = KEY_NULL;
 		Color color = ORANGE;
+		float aliveTime = 0.0f; //PARA DESEMPATAR EN 2 JUGADORES
+	};
+
+	enum class Winner
+	{
+		None = 0,
+		PlayerOne,
+		PlayerTwo
 	};
 
 	const int GRAVITY = 500;
@@ -26,11 +32,12 @@ namespace rd
 	extern Player bird;
 	extern Player birdTwo;
 	extern bool isTwoPlayers;
+	extern int bestScore;
 
 	void PlayerInit();
 	void PlayerUpdate(float delta);
-	void PlayerMovement(Player& player, float delta);
 	void PlayerDraw(Font font);
 	void PlayerControlsDraw(Font font);
-	void isPlayerAlive();
+	void PlayerScoreDraw(Font font);
+	Winner GetWinner();
 }

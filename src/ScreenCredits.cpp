@@ -1,31 +1,40 @@
 #include "ScreenCredits.h"
-#include "raylib.h"
+
 #include "Button.h"
+#include "ScreenManager.h"
 
 namespace rd
 {
-	Credits name;
-	Credits nameTwo;
-	Credits tittleGameDev;
+	struct Credits
+	{
+		const char* text;
+		float positionY;
+		float fontSize;
+		Color color;
+	};
+
+	static const float TITLE_FONT_SIZE = 80.0f;
+	static const float SECTION_FONT_SIZE = 40.0f;
+	static const float NAME_FONT_SIZE = 34.0f;
+	static const int CREDITS_LINES_AMOUNT = 10;
+
+	//TEXTO, ALTURA, TAMANIO Y COLOR DE CADA LINEA
+	static const Credits CREDITS_LINES[CREDITS_LINES_AMOUNT] =
+	{
+		{ "CREDITS", 30.0f, TITLE_FONT_SIZE, BLACK },
+		{ "GAME DEVELOPMENT", 140.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "Mercedes Ramirez Diaz (original author)", 185.0f, NAME_FONT_SIZE, BLACK },
+		{ "Valentin Reyes Cuadra (fork: 2 players, score, pause, audio)", 225.0f, NAME_FONT_SIZE, BLACK },
+		{ "ART & FONT", 300.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "Parallax backgrounds and Muroslant font: from the original project", 345.0f, NAME_FONT_SIZE, BLACK },
+		{ "MUSIC & SOUND EFFECTS", 420.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "Chiptune music and effects synthesized by code (see res_raw/audio)", 465.0f, NAME_FONT_SIZE, BLACK },
+		{ "MADE WITH", 540.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "raylib 6.2 - www.raylib.com", 585.0f, NAME_FONT_SIZE, BLACK }
+	};
 
 	void CreditsInit()
 	{
-		tittleGameDev.textPosition.x = 380;
-		tittleGameDev.textPosition.y = 300;
-		tittleGameDev.fontSize = 60;
-		tittleGameDev.spacing = 2;
-
-		name.textPosition.x = 380;
-		name.textPosition.y = 400;
-		name.fontSize = 60;
-		name.spacing = 2;
-
-		//SEGUNDO AUTOR (FORK), DEBAJO DE LA AUTORA ORIGINAL
-		nameTwo.textPosition.x = 380;
-		nameTwo.textPosition.y = 480;
-		nameTwo.fontSize = 60;
-		nameTwo.spacing = 2;
-
 		IsMousePressingBackButton();
 	}
 
@@ -33,8 +42,10 @@ namespace rd
 	{
 		BackButtonDraw();
 
-		DrawTextEx(font, "Game development by:", tittleGameDev.textPosition, tittleGameDev.fontSize, tittleGameDev.spacing, BLACK);
-		DrawTextEx(font, "Mercedes Ramirez Diaz", name.textPosition, name.fontSize, name.spacing, BLACK);
-		DrawTextEx(font, "Valentin Reyes Cuadra", nameTwo.textPosition, nameTwo.fontSize, nameTwo.spacing, BLACK);
+		for (int i = 0; i < CREDITS_LINES_AMOUNT; i++)
+		{
+			DrawCenteredText(font, CREDITS_LINES[i].text, CREDITS_LINES[i].positionY,
+				CREDITS_LINES[i].fontSize, CREDITS_LINES[i].color);
+		}
 	}
 }

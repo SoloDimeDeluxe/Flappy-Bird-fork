@@ -1,4 +1,5 @@
 #pragma once
+
 #include "raylib.h"
 
 namespace rd
@@ -18,7 +19,4 @@ namespace rd
 	void ParallaxUpdate(float delta);
 	void ParallaxDraw(Texture2D foreground, Texture2D middleGround,
 		Texture2D background);
-	void ParallaxDrawMovement(Texture2D texture, Vector2 position,
-		float offset);
-
 }

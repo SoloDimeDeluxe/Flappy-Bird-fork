@@ -1,11 +1,13 @@
 #include "RunGame.h"
+
 #include <ctime>
 #include <cstdlib>
-#include "raylib.h"
+
 #include "ScreenManager.h"
 #include "Player.h"
 #include "Obstacle.h"
 #include "Parallax.h"
+#include "GameAudio.h"
 
 namespace rd
 {
@@ -17,7 +19,12 @@ namespace rd
 		float deltaTime = 0;
 
 		InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Flappy Bird");
-		
+		SetExitKey(KEY_NULL); //ESC PAUSA, NO CIERRA EL JUEGO
+		InitAudioDevice();
+
+		//AUDIO
+		GameAudioLoad();
+
 		//FONTS
 		Font font = LoadFont("res/font/Muroslant.otf");
 
@@ -39,6 +46,7 @@ namespace rd
 			ClearBackground(WHITE);
 			deltaTime = GetFrameTime();
 
+			GameAudioUpdate();
 			Update(deltaTime, gameIsRunning);
 			Draw(font, foreground, middleGround, background);
 		}
@@ -47,7 +55,9 @@ namespace rd
 		UnloadTexture(foreground);
 		UnloadTexture(middleGround);
 		UnloadTexture(background);
+		GameAudioUnload();
 
+		CloseAudioDevice();
 		CloseWindow();
 	}
 }

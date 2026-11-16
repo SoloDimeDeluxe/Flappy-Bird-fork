@@ -119,7 +119,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;C:\Users\Aula 1\Desktop\Flappy-Bird-fork\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -127,6 +127,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -147,7 +148,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;C:\Users\Aula 1\Desktop\Flappy-Bird-fork\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib\raylib-6.2_win64_msvc16\include;$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -180,6 +181,8 @@
     <ClCompile Include="src\ScreenExit.cpp" />
     <ClCompile Include="src\ScreenManager.cpp" />
     <ClCompile Include="src\ScreenMenu.cpp" />
+    <ClCompile Include="src\ScreenPause.cpp" />
+    <ClCompile Include="src\GameAudio.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ScreenGameOver.h" />
@@ -193,6 +196,8 @@
     <ClInclude Include="src\ScreenManager.h" />
     <ClInclude Include="src\ScreenMenu.h" />
     <ClInclude Include="src\ScreenCredits.h" />
+    <ClInclude Include="src\ScreenPause.h" />
+    <ClInclude Include="src\GameAudio.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

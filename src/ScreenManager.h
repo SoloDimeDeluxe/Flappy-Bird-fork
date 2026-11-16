@@ -1,4 +1,5 @@
 #pragma once
+
 #include "raylib.h"
 
 namespace rd
@@ -17,11 +18,9 @@ namespace rd
 
 	extern Screen currentScreen;
 
-	const float START_DELAY = 3.0f;
-	extern float startDelay;
-
+	void CountdownStart();
 	void Update(float delta, bool& gameIsRunning);
-	void Draw(Font font, Texture2D foreground, 
+	void Draw(Font font, Texture2D foreground,
 		Texture2D middleGround, Texture2D background);
-	void CountdownDraw(Font font);
+	void DrawCenteredText(Font font, const char* text, float positionY, float fontSize, Color color);
 }

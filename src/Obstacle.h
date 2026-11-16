@@ -1,4 +1,5 @@
 #pragma once
+
 #include "raylib.h"
 
 namespace rd
@@ -7,6 +8,7 @@ namespace rd
 	{
 		Vector2 position;
 		Vector2 size;
+		bool isPassed = false; //PARA SUMAR EL PUNTO UNA SOLA VEZ
 	};
 
 	const int MAX_OBSTACLE_SPEED = 300;
