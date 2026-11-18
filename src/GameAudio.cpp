@@ -31,10 +31,10 @@ namespace rd
 
 	void GameAudioUpdate()
 	{
-		//MENU Y CREDITOS TIENEN SU MUSICA, EL RESTO USA LA DEL GAMEPLAY
+		//MENU, REGLAS Y CREDITOS TIENEN SU MUSICA, EL RESTO USA LA DEL GAMEPLAY
 		Music* targetMusic = &gameAudio.gameMusic;
 
-		if (currentScreen == Screen::Menu || currentScreen == Screen::Credits)
+		if (currentScreen == Screen::Menu || currentScreen == Screen::Rules || currentScreen == Screen::Credits)
 		{
 			targetMusic = &gameAudio.menuMusic;
 		}

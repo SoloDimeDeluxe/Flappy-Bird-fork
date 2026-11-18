@@ -15,7 +15,7 @@ namespace rd
 	};
 
 	const float MENU_BUTTON_POSITION_X = 530.0f;
-	const float MENU_BUTTON_SEPARATION = 100.0f;
+	const float MENU_BUTTON_SEPARATION = 95.0f;
 
 	void ButtonInit();
 	void ButtonSetup(Button& button, float positionY, float textOffsetX);

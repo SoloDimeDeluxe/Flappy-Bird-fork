@@ -8,6 +8,7 @@
 #include "Button.h"
 #include "ScreenMenu.h"
 #include "ScreenCredits.h"
+#include "ScreenRules.h"
 #include "ScreenExit.h"
 #include "Parallax.h"
 #include "ScreenGameOver.h"
@@ -68,6 +69,7 @@ namespace rd
 			PauseCheckInput();
 			break;
 		case Screen::Rules:
+			RulesInit();
 			break;
 		case Screen::Settings:
 			break;
@@ -114,6 +116,7 @@ namespace rd
 			BackButtonDraw(); //SE DIBUJA ULTIMO PARA QUE QUEDE ARRIBA DE TODO
 			break;
 		case Screen::Rules:
+			RulesDraw(font);
 			break;
 		case Screen::Settings:
 			break;
