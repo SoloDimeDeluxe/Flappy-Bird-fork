@@ -16,7 +16,7 @@ namespace rd
 	static const float TITLE_FONT_SIZE = 80.0f;
 	static const float SECTION_FONT_SIZE = 40.0f;
 	static const float NAME_FONT_SIZE = 34.0f;
-	static const int CREDITS_LINES_AMOUNT = 10;
+	static const int CREDITS_LINES_AMOUNT = 11;
 
 	//TEXTO, ALTURA, TAMANIO Y COLOR DE CADA LINEA
 	static const Credits CREDITS_LINES[CREDITS_LINES_AMOUNT] =
@@ -25,12 +25,13 @@ namespace rd
 		{ "GAME DEVELOPMENT", 140.0f, SECTION_FONT_SIZE, ORANGE },
 		{ "Mercedes Ramirez Diaz (original author)", 185.0f, NAME_FONT_SIZE, BLACK },
 		{ "Valentin Reyes Cuadra (fork: 2 players, score, pause, audio)", 225.0f, NAME_FONT_SIZE, BLACK },
-		{ "ART & FONT", 300.0f, SECTION_FONT_SIZE, ORANGE },
-		{ "Parallax backgrounds and Muroslant font: from the original project", 345.0f, NAME_FONT_SIZE, BLACK },
-		{ "MUSIC & SOUND EFFECTS", 420.0f, SECTION_FONT_SIZE, ORANGE },
-		{ "Chiptune music and effects synthesized by code (see res_raw/audio)", 465.0f, NAME_FONT_SIZE, BLACK },
-		{ "MADE WITH", 540.0f, SECTION_FONT_SIZE, ORANGE },
-		{ "raylib 6.2 - www.raylib.com", 585.0f, NAME_FONT_SIZE, BLACK }
+		{ "ART & FONT", 295.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "Parallax backgrounds generated with ChatGPT", 340.0f, NAME_FONT_SIZE, BLACK },
+		{ "Muro Slant font by Joan Alegret (La Tipomatica)", 380.0f, NAME_FONT_SIZE, BLACK },
+		{ "MUSIC & SOUND EFFECTS", 450.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "Chiptune music and effects synthesized by code (see res_raw/audio)", 495.0f, NAME_FONT_SIZE, BLACK },
+		{ "MADE WITH", 565.0f, SECTION_FONT_SIZE, ORANGE },
+		{ "raylib 6.2 - www.raylib.com", 610.0f, NAME_FONT_SIZE, BLACK }
 	};
 
 	void CreditsInit()
