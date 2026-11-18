@@ -28,6 +28,10 @@ namespace rd
 	static const float INVULNERABLE_DURATION = 2.0f;
 	static const float BLINK_SPEED = 10.0f; //CUANTAS VECES POR SEGUNDO SE PRENDE Y APAGA
 
+	//BARRA DEBAJO DEL PAJARO CON EL TIEMPO QUE LE QUEDA AL POWER-UP
+	static const float POWER_UP_BAR_HEIGHT = 6.0f;
+	static const float POWER_UP_BAR_OFFSET_Y = 8.0f;
+
 	//BONUS POR PASAR PEGADO AL BORDE DEL HUECO
 	static const float PERFECT_DISTANCE = 8.0f;
 	static const float CLOSE_DISTANCE = 20.0f;
@@ -51,6 +55,8 @@ namespace rd
 	static void BonusTextDraw(Font font, const Player& player);
 	static void PlayerLoseLife(Player& player, Sound sound);
 	static void PlayerBodyDraw(const Player& player);
+	static void PlayerPowerUpUpdate(Player& player, float delta);
+	static void PowerUpBarDraw(const Player& player);
 
 	void PlayerInit()
 	{
@@ -69,6 +75,8 @@ namespace rd
 		bird.lives = isTwoPlayers ? TWO_PLAYERS_LIVES : 1;
 		bird.invulnerableTimer = 0.0f;
 		bird.startPositionY = PLAYER_ONE_START_POSITION_Y;
+		bird.activePowerUp = PowerUpType::None;
+		bird.powerUpTimer = 0.0f;
 		bird.velocity = PLAYER_START_VELOCITY;
 		bird.jumpForce = PLAYER_JUMP_FORCE;
 		bird.isAlive = true;
@@ -114,6 +122,7 @@ namespace rd
 		if (bird.isAlive || isGameOver)
 		{
 			PlayerBodyDraw(bird);
+			PowerUpBarDraw(bird);
 		}
 
 		if (isTwoPlayers)
@@ -125,6 +134,7 @@ namespace rd
 			if (birdTwo.isAlive || isGameOver)
 			{
 				PlayerBodyDraw(birdTwo);
+				PowerUpBarDraw(birdTwo);
 				PlayerLabelDraw(font, birdTwo, "P2");
 			}
 		}
@@ -162,8 +172,11 @@ namespace rd
 	{
 		if (isTwoPlayers)
 		{
-			const char* scoreOneText = TextFormat("P1: %i   LIVES: %i", bird.score, bird.lives);
-			const char* scoreTwoText = TextFormat("P2: %i   LIVES: %i", birdTwo.score, birdTwo.lives);
+			//SI TIENE UN POWER-UP ACTIVO SE MUESTRA SU NOMBRE AL LADO
+			const char* scoreOneText = TextFormat("%s   P1: %i   LIVES: %i",
+				GetPowerUpInfo(bird.activePowerUp).name, bird.score, bird.lives);
+			const char* scoreTwoText = TextFormat("%s   P2: %i   LIVES: %i",
+				GetPowerUpInfo(birdTwo.activePowerUp).name, birdTwo.score, birdTwo.lives);
 			Vector2 scoreOneSize = MeasureTextEx(font, scoreOneText, SCORE_FONT_SIZE, TEXT_SPACING);
 			Vector2 scoreTwoSize = MeasureTextEx(font, scoreTwoText, SCORE_FONT_SIZE, TEXT_SPACING);
 
@@ -194,6 +207,12 @@ namespace rd
 		}
 
 		return Winner::None;
+	}
+
+	bool PlayerHasPowerUp(const Player& player, PowerUpType type)
+	{
+		//LOS EFECTOS DE CADA POWER-UP SE CHEQUEAN CON ESTO DONDE HAGA FALTA
+		return player.activePowerUp == type;
 	}
 
 	static void CheckPipePassed()
@@ -284,6 +303,8 @@ namespace rd
 		{
 			PlayerLoseLife(player, gameAudio.hit);
 		}
+
+		PlayerPowerUpUpdate(player, delta);
 
 		//MIENTRAS PASA EL CANIO SE GUARDA LO MAS CERCA QUE ESTUVO DEL BORDE
 		float gapDistance = ObstacleGetGapDistance(player.position, player.size);
@@ -377,5 +398,42 @@ namespace rd
 		{
 			DrawRectangleV(player.position, player.size, player.color);
 		}
+	}
+
+	static void PlayerPowerUpUpdate(Player& player, float delta)
+	{
+		if (player.activePowerUp != PowerUpType::None)
+		{
+			player.powerUpTimer -= delta;
+
+			if (player.powerUpTimer <= 0.0f)
+			{
+				player.activePowerUp = PowerUpType::None;
+			}
+		}
+
+		//SI AGARRA UNO NUEVO REEMPLAZA AL QUE TENIA
+		PowerUpType pickedPowerUp = PowerUpCheckPickup(player.position, player.size);
+
+		if (pickedPowerUp != PowerUpType::None)
+		{
+			player.activePowerUp = pickedPowerUp;
+			player.powerUpTimer = GetPowerUpInfo(pickedPowerUp).duration;
+			PlaySound(gameAudio.powerUp);
+		}
+	}
+
+	static void PowerUpBarDraw(const Player& player)
+	{
+		if (player.activePowerUp == PowerUpType::None)
+		{
+			return;
+		}
+
+		PowerUpInfo info = GetPowerUpInfo(player.activePowerUp);
+		float barWidth = player.size.x * player.powerUpTimer / info.duration;
+
+		DrawRectangleV({ player.position.x, player.position.y + player.size.y + POWER_UP_BAR_OFFSET_Y },
+			{ barWidth, POWER_UP_BAR_HEIGHT }, info.color);
 	}
 }

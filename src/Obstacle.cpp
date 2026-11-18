@@ -5,6 +5,7 @@
 #include "RunGame.h"
 #include "Collision.h"
 #include "ScreenManager.h"
+#include "PowerUp.h"
 
 namespace rd
 {
@@ -47,6 +48,8 @@ namespace rd
 		warningTimer = 0.0f;
 		lastGapY = (WINDOW_HEIGHT - NORMAL_GAP_SIZE) / 2;
 
+		PowerUpInit(); //ANTES DE ARMAR LOS CANIOS, QUE SON LOS QUE TRAEN LOS POWER-UPS
+
 		for (int i = 0; i < MAX_OBSTACLES; i++)
 		{
 			PipeRespawn(pipes[i], WINDOW_WIDTH + PIPE_SEPARATION * static_cast<float>(i));
@@ -71,6 +74,8 @@ namespace rd
 		{
 			pipes[i].positionX -= obstacleSpeed * delta;
 		}
+
+		PowerUpUpdate(delta, obstacleSpeed);
 
 		for (int i = 0; i < MAX_OBSTACLES; i++)
 		{
@@ -104,6 +109,8 @@ namespace rd
 				DrawRectangleRec(segments[j], RED);
 			}
 		}
+
+		PowerUpDraw();
 	}
 
 	void DifficultyWarningDraw(Font font)
@@ -199,6 +206,16 @@ namespace rd
 		}
 
 		lastGapY = pipe.gapOneY;
+
+		//A VECES EL CANIO TRAE UN POWER-UP EN EL MEDIO DE UNO DE SUS HUECOS
+		float powerUpGapY = pipe.gapOneY;
+
+		if (pipe.hasTwoGaps && rand() % 2 == 0)
+		{
+			powerUpGapY = pipe.gapTwoY;
+		}
+
+		PowerUpTrySpawn({ pipe.positionX + pipe.width / 2, powerUpGapY + pipe.gapSize / 2 });
 	}
 
 	static float GetDistanceToGapEdge(float gapY, float gapSize, Vector2 position, Vector2 size)

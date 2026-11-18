@@ -184,6 +184,7 @@
     <ClCompile Include="src\ScreenPause.cpp" />
     <ClCompile Include="src\GameAudio.cpp" />
     <ClCompile Include="src\ScreenRules.cpp" />
+    <ClCompile Include="src\PowerUp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ScreenGameOver.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="src\ScreenPause.h" />
     <ClInclude Include="src\GameAudio.h" />
     <ClInclude Include="src\ScreenRules.h" />
+    <ClInclude Include="src\PowerUp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

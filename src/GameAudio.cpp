@@ -6,6 +6,7 @@ namespace rd
 {
 	static const float MUSIC_VOLUME = 0.5f;
 	static const float BONUS_PITCH = 1.5f;
+	static const float POWER_UP_PITCH = 0.7f;
 
 	GameAudio gameAudio;
 
@@ -32,6 +33,10 @@ namespace rd
 		//EL BONUS ES EL SONIDO DEL PUNTO PERO MAS AGUDO
 		gameAudio.bonus = LoadSoundAlias(gameAudio.point);
 		SetSoundPitch(gameAudio.bonus, BONUS_PITCH);
+
+		//AGARRAR UN POWER-UP SUENA COMO EL PUNTO PERO MAS GRAVE
+		gameAudio.powerUp = LoadSoundAlias(gameAudio.point);
+		SetSoundPitch(gameAudio.powerUp, POWER_UP_PITCH);
 	}
 
 	void GameAudioUpdate()
@@ -78,6 +83,7 @@ namespace rd
 		UnloadMusicStream(gameAudio.gameMusic);
 
 		UnloadSoundAlias(gameAudio.bonus);
+		UnloadSoundAlias(gameAudio.powerUp);
 		UnloadSound(gameAudio.jump);
 		UnloadSound(gameAudio.point);
 		UnloadSound(gameAudio.hit);

@@ -2,6 +2,8 @@
 
 #include "raylib.h"
 
+#include "PowerUp.h"
+
 namespace rd
 {
 	struct Player
@@ -24,6 +26,8 @@ namespace rd
 		int lives = 1;
 		float invulnerableTimer = 0.0f; //DESPUES DE PERDER UNA VIDA NO PUEDE CHOCAR POR UN RATO
 		float startPositionY = 0.0f; //DONDE REAPARECE AL PERDER UNA VIDA
+		PowerUpType activePowerUp = PowerUpType::None;
+		float powerUpTimer = 0.0f;
 	};
 
 	enum class Winner
@@ -46,4 +50,5 @@ namespace rd
 	void PlayerControlsDraw(Font font);
 	void PlayerScoreDraw(Font font);
 	Winner GetWinner();
+	bool PlayerHasPowerUp(const Player& player, PowerUpType type);
 }
