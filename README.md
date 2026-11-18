@@ -40,5 +40,7 @@ The executable is generated in `bin/x64/<Configuration>/` and the `res` folder i
 
 - **Mercedes Ramirez Diaz**: original author ([original repository](https://github.com/Mer1203/Flappy-Bird))
 - **Valentin Reyes Cuadra**: fork (2 players mode, score, pause, audio, version 1.0)
+- Parallax backgrounds generated with ChatGPT
+- [Muro Slant](https://www.dafont.com/muro.font) font by Joan Alegret (La Tipomàtica)
 - Music and sound effects synthesized by code (script in `res_raw/audio`)
 - Made with raylib 6.2
