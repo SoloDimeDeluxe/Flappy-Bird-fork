@@ -2,7 +2,6 @@
 
 #include "RunGame.h"
 #include "Obstacle.h"
-#include "Collision.h"
 #include "ScreenManager.h"
 #include "ScreenGameOver.h"
 #include "GameAudio.h"
@@ -28,7 +27,7 @@ namespace rd
 	Player bird;
 	Player birdTwo;
 	bool isTwoPlayers = false;
-	int bestScore = 0; //DE LA SESION
+	int bestScore = 0;
 
 	static void CheckPipePassed();
 	static void CheckPlayersAlive();
@@ -52,12 +51,11 @@ namespace rd
 		bird.jumpKey = KEY_SPACE;
 		bird.color = ORANGE;
 
-		//JUGADOR 2: ARRANCA IGUAL QUE EL 1 PERO MAS ARRIBA, CON OTRA TECLA Y OTRO COLOR
 		birdTwo = bird;
 		birdTwo.position.y = PLAYER_TWO_START_POSITION_Y;
 		birdTwo.jumpKey = KEY_UP;
 		birdTwo.color = PURPLE;
-		birdTwo.isAlive = isTwoPlayers; //EN MODO 1 JUGADOR NO PARTICIPA
+		birdTwo.isAlive = isTwoPlayers;
 	}
 
 	void PlayerUpdate(float delta)
@@ -77,17 +75,15 @@ namespace rd
 
 	void PlayerDraw(Font font)
 	{
-		//EN GAME OVER SE DIBUJAN TAMBIEN LOS MUERTOS PARA VER DONDE CHOCARON
 		bool isGameOver = currentScreen == Screen::GameOver;
 
 		if (bird.isAlive || isGameOver)
 		{
-			DrawRectangleV(bird.position, bird.size, bird.color); // x, y, width, height, color
+			DrawRectangleV(bird.position, bird.size, bird.color);
 		}
 
 		if (isTwoPlayers)
 		{
-			//ETIQUETAS ARRIBA DE CADA JUGADOR PARA SABER QUIEN ES QUIEN
 			if (bird.isAlive || isGameOver)
 			{
 				PlayerLabelDraw(font, bird, "P1");
@@ -102,10 +98,8 @@ namespace rd
 
 	void PlayerControlsDraw(Font font)
 	{
-		//CONTROLES EN PANTALLA ARRIBA AL CENTRO
 		if (isTwoPlayers)
 		{
-			//LOS DOS JUNTOS CENTRADOS, CADA UNO CON EL COLOR DE SU JUGADOR
 			const char* controlsOneText = "P1: SPACE";
 			const char* controlsTwoText = "P2: UP ARROW";
 			Vector2 controlsOneSize = MeasureTextEx(font, controlsOneText, CONTROLS_FONT_SIZE, TEXT_SPACING);
@@ -153,7 +147,6 @@ namespace rd
 
 	Winner GetWinner()
 	{
-		//GANA EL DE MAS PUNTOS, SI EMPATAN EL QUE DURO MAS
 		if (bird.score != birdTwo.score)
 		{
 			return bird.score > birdTwo.score ? Winner::PlayerOne : Winner::PlayerTwo;
@@ -168,11 +161,8 @@ namespace rd
 
 	static void CheckPipePassed()
 	{
-		//PUNTO PARA CADA JUGADOR VIVO CUANDO EL CANIO YA LO PASO
-		if (!pipeOne.isPassed && pipeOne.position.x + pipeOne.size.x < bird.position.x)
+		if (ObstacleCheckPassed(bird.position.x))
 		{
-			pipeOne.isPassed = true;
-
 			if (bird.isAlive || birdTwo.isAlive)
 			{
 				PlaySound(gameAudio.point);
@@ -191,7 +181,6 @@ namespace rd
 
 	static void CheckPlayersAlive()
 	{
-		//CUANDO NO QUEDA NINGUN JUGADOR VIVO SE PASA A LA PANTALLA DE GAME OVER
 		if (!bird.isAlive && !birdTwo.isAlive)
 		{
 			if (bird.score > bestScore)
@@ -217,11 +206,9 @@ namespace rd
 			PlaySound(gameAudio.jump);
 		}
 
-		//VELOCITY:
 		player.velocity += GRAVITY * delta;
 		player.position.y += delta * player.velocity;
 
-		//PISO Y TECHO SEGUN EL TAMANIO DEL RECTANGULO
 		if (player.position.y + player.size.y > WINDOW_HEIGHT)
 		{
 			player.isAlive = false;
@@ -234,10 +221,7 @@ namespace rd
 			player.position.y = 0;
 		}
 
-		//SI YA SE CAYO NO SE CHEQUEA EL CHOQUE
-		if (player.isAlive &&
-			(CheckRectangleCollision(player.position, player.size, pipeOne.position, pipeOne.size) ||
-			CheckRectangleCollision(player.position, player.size, pipeTwo.position, pipeTwo.size)))
+		if (player.isAlive && ObstacleCheckCollision(player.position, player.size))
 		{
 			player.isAlive = false;
 			PlaySound(gameAudio.hit);

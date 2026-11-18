@@ -16,7 +16,7 @@
 
 namespace rd
 {
-	static const float START_DELAY = 3.0f; //SEGUNDOS
+	static const float START_DELAY = 3.0f;
 	static const float COUNTDOWN_FONT_SIZE = 150.0f;
 	static const float TEXT_SPACING = 2.0f;
 
@@ -43,14 +43,12 @@ namespace rd
 		case Screen::Play:
 			ParallaxUpdate(delta);
 
-			//CUENTA REGRESIVA ANTES DE EMPEZAR A JUGAR
 			if (startDelay > 0.0f)
 			{
 				int previousNumber = static_cast<int>(ceilf(startDelay));
 				startDelay -= delta;
 				int currentNumber = static_cast<int>(ceilf(startDelay));
 
-				//BEEP CADA VEZ QUE CAMBIA EL NUMERO
 				if (currentNumber != previousNumber && currentNumber > 0)
 				{
 					PlaySound(gameAudio.countdown);
@@ -58,11 +56,12 @@ namespace rd
 			}
 			else
 			{
-				ObstacleUpdate(delta);
+				int highestScore = bird.score > birdTwo.score ? bird.score : birdTwo.score;
+				ObstacleUpdate(delta, highestScore);
 				PlayerUpdate(delta);
 			}
 
-			IsMousePressingBackButton(); //VOLVER AL MENU
+			IsMousePressingBackButton();
 			PauseCheckInput();
 			break;
 		case Screen::Rules:
@@ -99,16 +98,17 @@ namespace rd
 			ParallaxDraw(foreground, middleGround, background);
 			PlayerDraw(font);
 			ObstacleDraw();
-			PlayerControlsDraw(font); //DESPUES DE LOS CANIOS PARA QUE NO LOS TAPEN
+			PlayerControlsDraw(font);
 			PlayerScoreDraw(font);
 			PauseHintDraw(font);
+			DifficultyWarningDraw(font);
 
 			if (startDelay > 0.0f)
 			{
 				CountdownDraw(font);
 			}
 
-			BackButtonDraw(); //SE DIBUJA ULTIMO PARA QUE QUEDE ARRIBA DE TODO
+			BackButtonDraw();
 			break;
 		case Screen::Rules:
 			break;
@@ -120,7 +120,6 @@ namespace rd
 		case Screen::Exit:
 			break;
 		case Screen::Pause:
-			//JUEGO QUIETO DE FONDO Y EL CARTEL DE PAUSA ENCIMA
 			ParallaxDraw(foreground, middleGround, background);
 			PlayerDraw(font);
 			ObstacleDraw();
@@ -129,7 +128,6 @@ namespace rd
 			BackButtonDraw();
 			break;
 		case Screen::GameOver:
-			//SE DIBUJA EL JUEGO QUIETO DE FONDO Y EL CARTEL ENCIMA
 			ParallaxDraw(foreground, middleGround, background);
 			PlayerDraw(font);
 			ObstacleDraw();

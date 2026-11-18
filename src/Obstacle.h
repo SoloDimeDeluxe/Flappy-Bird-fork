@@ -6,17 +6,19 @@ namespace rd
 {
 	struct Obstacle
 	{
-		Vector2 position;
-		Vector2 size;
-		bool isPassed = false; //PARA SUMAR EL PUNTO UNA SOLA VEZ
+		float positionX;
+		float width;
+		float gapOneY;
+		float gapTwoY;
+		float gapSize;
+		bool hasTwoGaps = false;
+		bool isPassed = false;
 	};
 
-	const int MAX_OBSTACLE_SPEED = 300;
-
-	extern Obstacle pipeOne;
-	extern Obstacle pipeTwo;
-
 	void ObstacleInit();
-	void ObstacleUpdate(float delta);
+	void ObstacleUpdate(float delta, int highestScore);
 	void ObstacleDraw();
+	void DifficultyWarningDraw(Font font);
+	bool ObstacleCheckCollision(Vector2 position, Vector2 size);
+	bool ObstacleCheckPassed(float positionX);
 }
