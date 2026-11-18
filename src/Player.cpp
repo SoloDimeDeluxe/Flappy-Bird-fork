@@ -24,6 +24,10 @@ namespace rd
 	static const float SCORE_MARGIN = 20.0f;
 	static const float TEXT_SPACING = 1.0f;
 
+	static const int TWO_PLAYERS_LIVES = 3;
+	static const float INVULNERABLE_DURATION = 2.0f;
+	static const float BLINK_SPEED = 10.0f; //CUANTAS VECES POR SEGUNDO SE PRENDE Y APAGA
+
 	//BONUS POR PASAR PEGADO AL BORDE DEL HUECO
 	static const float PERFECT_DISTANCE = 8.0f;
 	static const float CLOSE_DISTANCE = 20.0f;
@@ -45,6 +49,8 @@ namespace rd
 	static void PlayerLabelDraw(Font font, const Player& player, const char* label);
 	static void CheckCloseBonus(Player& player);
 	static void BonusTextDraw(Font font, const Player& player);
+	static void PlayerLoseLife(Player& player, Sound sound);
+	static void PlayerBodyDraw(const Player& player);
 
 	void PlayerInit()
 	{
@@ -60,6 +66,9 @@ namespace rd
 		bird.closestGapDistance = -1.0f;
 		bird.lastBonus = 0;
 		bird.bonusTimer = 0.0f;
+		bird.lives = isTwoPlayers ? TWO_PLAYERS_LIVES : 1;
+		bird.invulnerableTimer = 0.0f;
+		bird.startPositionY = PLAYER_ONE_START_POSITION_Y;
 		bird.velocity = PLAYER_START_VELOCITY;
 		bird.jumpForce = PLAYER_JUMP_FORCE;
 		bird.isAlive = true;
@@ -68,6 +77,7 @@ namespace rd
 
 		birdTwo = bird;
 		birdTwo.position.y = PLAYER_TWO_START_POSITION_Y;
+		birdTwo.startPositionY = PLAYER_TWO_START_POSITION_Y;
 		birdTwo.jumpKey = KEY_UP;
 		birdTwo.color = PURPLE;
 		birdTwo.isAlive = isTwoPlayers;
@@ -103,7 +113,7 @@ namespace rd
 
 		if (bird.isAlive || isGameOver)
 		{
-			DrawRectangleV(bird.position, bird.size, bird.color);
+			PlayerBodyDraw(bird);
 		}
 
 		if (isTwoPlayers)
@@ -114,7 +124,7 @@ namespace rd
 			}
 			if (birdTwo.isAlive || isGameOver)
 			{
-				DrawRectangleV(birdTwo.position, birdTwo.size, birdTwo.color);
+				PlayerBodyDraw(birdTwo);
 				PlayerLabelDraw(font, birdTwo, "P2");
 			}
 		}
@@ -152,8 +162,8 @@ namespace rd
 	{
 		if (isTwoPlayers)
 		{
-			const char* scoreOneText = TextFormat("P1: %i", bird.score);
-			const char* scoreTwoText = TextFormat("P2: %i", birdTwo.score);
+			const char* scoreOneText = TextFormat("P1: %i   LIVES: %i", bird.score, bird.lives);
+			const char* scoreTwoText = TextFormat("P2: %i   LIVES: %i", birdTwo.score, birdTwo.lives);
 			Vector2 scoreOneSize = MeasureTextEx(font, scoreOneText, SCORE_FONT_SIZE, TEXT_SPACING);
 			Vector2 scoreTwoSize = MeasureTextEx(font, scoreTwoText, SCORE_FONT_SIZE, TEXT_SPACING);
 
@@ -230,6 +240,17 @@ namespace rd
 	{
 		player.aliveTime += delta;
 
+		if (player.invulnerableTimer > 0.0f)
+		{
+			player.invulnerableTimer -= delta;
+
+			//SI SE TERMINA ADENTRO DE UN CANIO SE ESTIRA HASTA QUE SALGA, PARA NO MORIR DE GOLPE
+			if (player.invulnerableTimer <= 0.0f && ObstacleCheckCollision(player.position, player.size))
+			{
+				player.invulnerableTimer = delta;
+			}
+		}
+
 		if (IsKeyPressed(player.jumpKey))
 		{
 			player.velocity = player.jumpForce;
@@ -241,9 +262,17 @@ namespace rd
 
 		if (player.position.y + player.size.y > WINDOW_HEIGHT)
 		{
-			player.isAlive = false;
 			player.position.y = WINDOW_HEIGHT - player.size.y;
-			PlaySound(gameAudio.fall);
+
+			//INVULNERABLE REBOTA EN EL PISO EN VEZ DE PERDER OTRA VIDA
+			if (player.invulnerableTimer > 0.0f)
+			{
+				player.velocity = player.jumpForce;
+			}
+			else
+			{
+				PlayerLoseLife(player, gameAudio.fall);
+			}
 		}
 		else if (player.position.y < 0)
 		{
@@ -251,10 +280,9 @@ namespace rd
 			player.position.y = 0;
 		}
 
-		if (player.isAlive && ObstacleCheckCollision(player.position, player.size))
+		if (player.isAlive && player.invulnerableTimer <= 0.0f && ObstacleCheckCollision(player.position, player.size))
 		{
-			player.isAlive = false;
-			PlaySound(gameAudio.hit);
+			PlayerLoseLife(player, gameAudio.hit);
 		}
 
 		//MIENTRAS PASA EL CANIO SE GUARDA LO MAS CERCA QUE ESTUVO DEL BORDE
@@ -318,5 +346,36 @@ namespace rd
 
 		DrawTextEx(font, bonusText, textPosition, BONUS_FONT_SIZE, TEXT_SPACING,
 			Fade(player.color, player.bonusTimer / BONUS_TEXT_DURATION));
+	}
+
+	static void PlayerLoseLife(Player& player, Sound sound)
+	{
+		PlaySound(sound);
+		player.lives--;
+
+		if (player.lives > 0)
+		{
+			//REAPARECE EN SU LUGAR DE INICIO Y QUEDA INVULNERABLE UN RATO
+			player.position.y = player.startPositionY;
+			player.velocity = 0.0f;
+			player.invulnerableTimer = INVULNERABLE_DURATION;
+			player.closestGapDistance = -1.0f;
+		}
+		else
+		{
+			player.isAlive = false;
+		}
+	}
+
+	static void PlayerBodyDraw(const Player& player)
+	{
+		//MIENTRAS ES INVULNERABLE TITILA
+		bool isBlinkingOff = player.invulnerableTimer > 0.0f &&
+			static_cast<int>(player.invulnerableTimer * BLINK_SPEED) % 2 == 1;
+
+		if (!isBlinkingOff)
+		{
+			DrawRectangleV(player.position, player.size, player.color);
+		}
 	}
 }

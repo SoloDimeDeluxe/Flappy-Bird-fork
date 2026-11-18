@@ -18,7 +18,7 @@ The orange arrow at the top left corner goes back to the main menu.
 ## Game modes
 
 - **1 Player**: get as many points as you can. Your best score of the session is shown on the game over screen.
-- **2 Players**: both birds play at the same time. The player with more points wins; if there is a tie, the one who survived longer wins.
+- **2 Players**: both birds play at the same time and each one has 3 lives. After losing a life, the bird blinks and can't crash for 2 seconds. The player with more points wins; if there is a tie, the one who survived longer wins.
 
 ## Features
 
@@ -27,6 +27,7 @@ The orange arrow at the top left corner goes back to the main menu.
 - Pause screen
 - Rules screen
 - Bonus points for passing close to the edge of the gap
+- 3 lives per player in 2 players mode
 - Pipes with two gaps and more speed after 10 points
 - Score, best score and winner screen
 - 2 music tracks (menu and gameplay) and 7 sound effects

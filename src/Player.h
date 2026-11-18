@@ -21,6 +21,9 @@ namespace rd
 		float closestGapDistance = -1.0f; //LO MAS CERCA QUE PASO DEL BORDE EN EL CANIO ACTUAL
 		int lastBonus = 0;
 		float bonusTimer = 0.0f;
+		int lives = 1;
+		float invulnerableTimer = 0.0f; //DESPUES DE PERDER UNA VIDA NO PUEDE CHOCAR POR UN RATO
+		float startPositionY = 0.0f; //DONDE REAPARECE AL PERDER UNA VIDA
 	};
 
 	enum class Winner

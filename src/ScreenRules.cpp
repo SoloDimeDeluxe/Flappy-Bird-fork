@@ -16,7 +16,7 @@ namespace rd
 
 	static const int HOW_TO_PLAY_LINES_AMOUNT = 3;
 	static const int CONTROLS_LINES_AMOUNT = 2;
-	static const int TWO_PLAYERS_LINES_AMOUNT = 2;
+	static const int TWO_PLAYERS_LINES_AMOUNT = 3;
 	static const int DIFFICULTY_LINES_AMOUNT = 1;
 
 	static const char* HOW_TO_PLAY_LINES[HOW_TO_PLAY_LINES_AMOUNT] =
@@ -34,7 +34,8 @@ namespace rd
 
 	static const char* TWO_PLAYERS_LINES[TWO_PLAYERS_LINES_AMOUNT] =
 	{
-		"Both birds fly at the same time",
+		"Both birds fly at the same time. Each one has 3 lives",
+		"After losing a life you blink and can't crash for 2 seconds",
 		"Most points wins. If it's a tie, the one who survived longer wins"
 	};
 
