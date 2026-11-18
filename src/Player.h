@@ -18,6 +18,9 @@ namespace rd
 		int jumpKey = KEY_NULL;
 		Color color = ORANGE;
 		float aliveTime = 0.0f; //PARA DESEMPATAR EN 2 JUGADORES
+		float closestGapDistance = -1.0f; //LO MAS CERCA QUE PASO DEL BORDE EN EL CANIO ACTUAL
+		int lastBonus = 0;
+		float bonusTimer = 0.0f;
 	};
 
 	enum class Winner

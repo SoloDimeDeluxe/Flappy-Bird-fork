@@ -21,4 +21,5 @@ namespace rd
 	void DifficultyWarningDraw(Font font);
 	bool ObstacleCheckCollision(Vector2 position, Vector2 size);
 	bool ObstacleCheckPassed(float positionX);
+	float ObstacleGetGapDistance(Vector2 position, Vector2 size);
 }

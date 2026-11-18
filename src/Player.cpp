@@ -24,6 +24,16 @@ namespace rd
 	static const float SCORE_MARGIN = 20.0f;
 	static const float TEXT_SPACING = 1.0f;
 
+	//BONUS POR PASAR PEGADO AL BORDE DEL HUECO
+	static const float PERFECT_DISTANCE = 8.0f;
+	static const float CLOSE_DISTANCE = 20.0f;
+	static const int PERFECT_BONUS = 2;
+	static const int CLOSE_BONUS = 1;
+	static const float BONUS_TEXT_DURATION = 0.8f;
+	static const float BONUS_TEXT_RISE = 40.0f; //CUANTO SUBE EL TEXTO MIENTRAS SE DESVANECE
+	static const float BONUS_FONT_SIZE = 30.0f;
+	static const float BONUS_OFFSET_Y = 65.0f;
+
 	Player bird;
 	Player birdTwo;
 	bool isTwoPlayers = false;
@@ -33,6 +43,8 @@ namespace rd
 	static void CheckPlayersAlive();
 	static void PlayerMovement(Player& player, float delta);
 	static void PlayerLabelDraw(Font font, const Player& player, const char* label);
+	static void CheckCloseBonus(Player& player);
+	static void BonusTextDraw(Font font, const Player& player);
 
 	void PlayerInit()
 	{
@@ -45,6 +57,9 @@ namespace rd
 		bird.rotation = 0;
 		bird.score = 0;
 		bird.aliveTime = 0.0f;
+		bird.closestGapDistance = -1.0f;
+		bird.lastBonus = 0;
+		bird.bonusTimer = 0.0f;
 		bird.velocity = PLAYER_START_VELOCITY;
 		bird.jumpForce = PLAYER_JUMP_FORCE;
 		bird.isAlive = true;
@@ -67,6 +82,15 @@ namespace rd
 		if (birdTwo.isAlive)
 		{
 			PlayerMovement(birdTwo, delta);
+		}
+
+		if (bird.bonusTimer > 0.0f)
+		{
+			bird.bonusTimer -= delta;
+		}
+		if (birdTwo.bonusTimer > 0.0f)
+		{
+			birdTwo.bonusTimer -= delta;
 		}
 
 		CheckPipePassed();
@@ -94,6 +118,9 @@ namespace rd
 				PlayerLabelDraw(font, birdTwo, "P2");
 			}
 		}
+
+		BonusTextDraw(font, bird);
+		BonusTextDraw(font, birdTwo);
 	}
 
 	void PlayerControlsDraw(Font font)
@@ -176,6 +203,9 @@ namespace rd
 			{
 				birdTwo.score++;
 			}
+
+			CheckCloseBonus(bird);
+			CheckCloseBonus(birdTwo);
 		}
 	}
 
@@ -226,6 +256,14 @@ namespace rd
 			player.isAlive = false;
 			PlaySound(gameAudio.hit);
 		}
+
+		//MIENTRAS PASA EL CANIO SE GUARDA LO MAS CERCA QUE ESTUVO DEL BORDE
+		float gapDistance = ObstacleGetGapDistance(player.position, player.size);
+
+		if (gapDistance >= 0.0f && (player.closestGapDistance < 0.0f || gapDistance < player.closestGapDistance))
+		{
+			player.closestGapDistance = gapDistance;
+		}
 	}
 
 	static void PlayerLabelDraw(Font font, const Player& player, const char* label)
@@ -234,5 +272,51 @@ namespace rd
 		Vector2 labelPosition = { player.position.x + (player.size.x - labelSize.x) / 2, player.position.y - LABEL_OFFSET_Y };
 
 		DrawTextEx(font, label, labelPosition, LABEL_FONT_SIZE, TEXT_SPACING, player.color);
+	}
+
+	static void CheckCloseBonus(Player& player)
+	{
+		int bonus = 0;
+
+		if (player.isAlive && player.closestGapDistance >= 0.0f)
+		{
+			if (player.closestGapDistance < PERFECT_DISTANCE)
+			{
+				bonus = PERFECT_BONUS;
+			}
+			else if (player.closestGapDistance < CLOSE_DISTANCE)
+			{
+				bonus = CLOSE_BONUS;
+			}
+		}
+
+		if (bonus > 0)
+		{
+			player.score += bonus;
+			player.lastBonus = bonus;
+			player.bonusTimer = BONUS_TEXT_DURATION;
+			PlaySound(gameAudio.bonus);
+		}
+
+		//EL SIGUIENTE CANIO EMPIEZA DE CERO
+		player.closestGapDistance = -1.0f;
+	}
+
+	static void BonusTextDraw(Font font, const Player& player)
+	{
+		if (player.bonusTimer <= 0.0f)
+		{
+			return;
+		}
+
+		//EL TEXTO SUBE Y SE VA DESVANECIENDO
+		float progress = 1.0f - player.bonusTimer / BONUS_TEXT_DURATION;
+		const char* bonusText = player.lastBonus == PERFECT_BONUS ? "+2 PERFECT!" : "+1 CLOSE!";
+		Vector2 textSize = MeasureTextEx(font, bonusText, BONUS_FONT_SIZE, TEXT_SPACING);
+		Vector2 textPosition = { player.position.x + (player.size.x - textSize.x) / 2,
+			player.position.y - BONUS_OFFSET_Y - BONUS_TEXT_RISE * progress };
+
+		DrawTextEx(font, bonusText, textPosition, BONUS_FONT_SIZE, TEXT_SPACING,
+			Fade(player.color, player.bonusTimer / BONUS_TEXT_DURATION));
 	}
 }

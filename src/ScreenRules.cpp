@@ -14,7 +14,7 @@ namespace rd
 	static const float LINE_HEIGHT = 35.0f;
 	static const float SECTION_SEPARATION = 25.0f;
 
-	static const int HOW_TO_PLAY_LINES_AMOUNT = 2;
+	static const int HOW_TO_PLAY_LINES_AMOUNT = 3;
 	static const int CONTROLS_LINES_AMOUNT = 2;
 	static const int TWO_PLAYERS_LINES_AMOUNT = 2;
 	static const int DIFFICULTY_LINES_AMOUNT = 1;
@@ -22,7 +22,8 @@ namespace rd
 	static const char* HOW_TO_PLAY_LINES[HOW_TO_PLAY_LINES_AMOUNT] =
 	{
 		"Fly between the pipes without touching them or falling to the ground",
-		"Every pipe you pass gives you 1 point"
+		"Every pipe you pass gives you 1 point",
+		"Pass close to the edge of the gap for extra points: +1 CLOSE, +2 PERFECT"
 	};
 
 	static const char* CONTROLS_LINES[CONTROLS_LINES_AMOUNT] =

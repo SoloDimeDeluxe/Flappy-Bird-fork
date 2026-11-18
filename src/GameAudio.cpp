@@ -5,6 +5,7 @@
 namespace rd
 {
 	static const float MUSIC_VOLUME = 0.5f;
+	static const float BONUS_PITCH = 1.5f;
 
 	GameAudio gameAudio;
 
@@ -27,6 +28,10 @@ namespace rd
 		gameAudio.gameOver = LoadSound("res/audio/game_over.wav");
 		gameAudio.click = LoadSound("res/audio/click.wav");
 		gameAudio.countdown = LoadSound("res/audio/countdown.wav");
+
+		//EL BONUS ES EL SONIDO DEL PUNTO PERO MAS AGUDO
+		gameAudio.bonus = LoadSoundAlias(gameAudio.point);
+		SetSoundPitch(gameAudio.bonus, BONUS_PITCH);
 	}
 
 	void GameAudioUpdate()
@@ -72,6 +77,7 @@ namespace rd
 		UnloadMusicStream(gameAudio.menuMusic);
 		UnloadMusicStream(gameAudio.gameMusic);
 
+		UnloadSoundAlias(gameAudio.bonus);
 		UnloadSound(gameAudio.jump);
 		UnloadSound(gameAudio.point);
 		UnloadSound(gameAudio.hit);

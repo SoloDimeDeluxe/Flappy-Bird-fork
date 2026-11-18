@@ -15,6 +15,7 @@ namespace rd
 		Sound gameOver;
 		Sound click;
 		Sound countdown;
+		Sound bonus;
 	};
 
 	extern GameAudio gameAudio;

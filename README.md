@@ -26,6 +26,7 @@ The orange arrow at the top left corner goes back to the main menu.
 - Countdown before each match
 - Pause screen
 - Rules screen
+- Bonus points for passing close to the edge of the gap
 - Pipes with two gaps and more speed after 10 points
 - Score, best score and winner screen
 - 2 music tracks (menu and gameplay) and 7 sound effects

@@ -35,6 +35,7 @@ namespace rd
 	static float lastGapY = 0.0f;
 
 	static void PipeRespawn(Obstacle& pipe, float positionX);
+	static float GetDistanceToGapEdge(float gapY, float gapSize, Vector2 position, Vector2 size);
 	static float GetRandomFloat(float min, float max);
 	static float GetReachableGapY(float min, float max);
 	static int GetPipeSegments(const Obstacle& pipe, Rectangle segments[]);
@@ -150,6 +151,30 @@ namespace rd
 		return isAnyPassed;
 	}
 
+	float ObstacleGetGapDistance(Vector2 position, Vector2 size)
+	{
+		//DEVUELVE QUE TAN CERCA DEL BORDE DEL HUECO ESTA EL PAJARO, O -1 SI NO ESTA PASANDO NINGUN CANIO
+		for (int i = 0; i < MAX_OBSTACLES; i++)
+		{
+			bool isInsidePipe = position.x + size.x > pipes[i].positionX &&
+				position.x < pipes[i].positionX + pipes[i].width;
+
+			if (isInsidePipe)
+			{
+				float distance = GetDistanceToGapEdge(pipes[i].gapOneY, pipes[i].gapSize, position, size);
+
+				if (distance < 0.0f && pipes[i].hasTwoGaps)
+				{
+					distance = GetDistanceToGapEdge(pipes[i].gapTwoY, pipes[i].gapSize, position, size);
+				}
+
+				return distance;
+			}
+		}
+
+		return -1.0f;
+	}
+
 	static void PipeRespawn(Obstacle& pipe, float positionX)
 	{
 		pipe.positionX = positionX;
@@ -174,6 +199,20 @@ namespace rd
 		}
 
 		lastGapY = pipe.gapOneY;
+	}
+
+	static float GetDistanceToGapEdge(float gapY, float gapSize, Vector2 position, Vector2 size)
+	{
+		float distanceToTop = position.y - gapY;
+		float distanceToBottom = gapY + gapSize - (position.y + size.y);
+
+		//SI NO ESTA ADENTRO DE ESTE HUECO NO CUENTA
+		if (distanceToTop < 0.0f || distanceToBottom < 0.0f)
+		{
+			return -1.0f;
+		}
+
+		return distanceToTop < distanceToBottom ? distanceToTop : distanceToBottom;
 	}
 
 	static float GetRandomFloat(float min, float max)
