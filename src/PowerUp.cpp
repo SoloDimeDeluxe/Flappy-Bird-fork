@@ -1,7 +1,5 @@
 #include "PowerUp.h"
 
-#include <cstdlib>
-
 #include "Player.h"
 
 namespace rd
@@ -33,7 +31,7 @@ namespace rd
 		//SOLO HAY POWER-UPS EN 2 JUGADORES
 		int typesAmount = static_cast<int>(PowerUpType::Count) - 1; //SIN CONTAR NONE
 
-		if (!isTwoPlayers || typesAmount <= 0 || rand() % 100 >= SPAWN_CHANCE)
+		if (!isTwoPlayers || typesAmount <= 0 || GetRandomValue(0, 99) >= SPAWN_CHANCE)
 		{
 			return;
 		}
@@ -44,7 +42,7 @@ namespace rd
 			{
 				//LA POSICION QUE LLEGA ES EL CENTRO DEL HUECO
 				powerUps[i].position = { position.x - POWER_UP_SIZE / 2, position.y - POWER_UP_SIZE / 2 };
-				powerUps[i].type = static_cast<PowerUpType>(rand() % typesAmount + 1);
+				powerUps[i].type = static_cast<PowerUpType>(GetRandomValue(1, typesAmount));
 				powerUps[i].isActive = true;
 				return;
 			}

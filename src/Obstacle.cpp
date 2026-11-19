@@ -1,7 +1,5 @@
 #include "Obstacle.h"
 
-#include <cstdlib>
-
 #include "RunGame.h"
 #include "ScreenManager.h"
 #include "PowerUp.h"
@@ -210,7 +208,7 @@ namespace rd
 		//A VECES EL CANIO TRAE UN POWER-UP EN EL MEDIO DE UNO DE SUS HUECOS
 		float powerUpGapY = pipe.gapOneY;
 
-		if (pipe.hasTwoGaps && rand() % 2 == 0)
+		if (pipe.hasTwoGaps && GetRandomValue(0, 1) == 0)
 		{
 			powerUpGapY = pipe.gapTwoY;
 		}
@@ -234,7 +232,8 @@ namespace rd
 
 	static float GetRandomFloat(float min, float max)
 	{
-		return min + static_cast<float>(rand() % (static_cast<int>(max - min) + 1));
+		//GETRANDOMVALUE DE RAYLIB DEVUELVE UN ENTERO ENTRE LOS DOS VALORES (INCLUIDOS)
+		return min + static_cast<float>(GetRandomValue(0, static_cast<int>(max - min)));
 	}
 
 	static float GetReachableGapY(float min, float max)
