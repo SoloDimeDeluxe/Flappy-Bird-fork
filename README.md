@@ -35,6 +35,10 @@ The orange arrow at the top left corner goes back to the main menu.
 - Score, best score and winner screen
 - 2 music tracks (menu and gameplay) and 7 sound effects
 
+## Download
+
+The compiled game for each version is in the [Releases](https://github.com/SoloDimeDeluxe/Flappy-Bird-fork/releases) section and on [itch.io](https://solodim3deluxe.itch.io/flappy-bird): download the `.zip`, extract it and run `Flappy Bird.exe`.
+
 ## Building
 
 1. Clone the repository.
@@ -46,8 +50,8 @@ The executable is generated in `bin/x64/<Configuration>/` and the `res` folder i
 ## Credits
 
 - **Mercedes Ramirez Diaz**: original author ([original repository](https://github.com/Mer1203/Flappy-Bird))
-- **Valentin Reyes Cuadra**: fork (2 players mode, score, pause, audio, version 1.0)
+- **Valentin Reyes Cuadra**: fork (2 players mode, lives, power-ups, bonus points, difficulty, score, pause, audio)
 - Parallax backgrounds generated with ChatGPT
 - [Muro Slant](https://www.dafont.com/muro.font) font by Joan Alegret (La Tipomàtica)
-- Music and sound effects synthesized by code (script in `res_raw/audio`)
+- Music and sound effects made with Claude AI (Anthropic), synthesized by code (script in `res_raw/audio`)
 - Made with raylib 6.2
