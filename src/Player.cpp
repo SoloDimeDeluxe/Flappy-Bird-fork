@@ -43,6 +43,9 @@ namespace rd
 	static const float BONUS_OFFSET_Y = 65.0f;
 
 	static const int DOUBLE_POINTS_MULTIPLIER = 2;
+	static const float SHIELD_INVULNERABLE_DURATION = 1.0f; //PARA QUE PUEDA SALIR DEL CANIO DESPUES DE ROMPER EL ESCUDO
+	static const float SHIELD_RADIUS_SCALE = 0.85f; //TAMANIO DEL CIRCULO DEL ESCUDO RESPECTO AL PAJARO
+	static const int SHIELD_RINGS = 3; //VARIOS CIRCULOS JUNTOS PARA QUE EL BORDE SE VEA GRUESO
 
 	Player bird;
 	Player birdTwo;
@@ -56,6 +59,7 @@ namespace rd
 	static void CheckCloseBonus(Player& player);
 	static int GetPointsMultiplier(const Player& player);
 	static void BonusTextDraw(Font font, const Player& player);
+	static void PlayerCrash(Player& player, Sound sound);
 	static void PlayerLoseLife(Player& player, Sound sound);
 	static void PlayerBodyDraw(const Player& player);
 	static void PlayerPowerUpUpdate(Player& player, float delta);
@@ -294,7 +298,7 @@ namespace rd
 			}
 			else
 			{
-				PlayerLoseLife(player, gameAudio.fall);
+				PlayerCrash(player, gameAudio.fall);
 			}
 		}
 		else if (player.position.y < 0)
@@ -305,7 +309,7 @@ namespace rd
 
 		if (player.isAlive && player.invulnerableTimer <= 0.0f && ObstacleCheckCollision(player.position, player.size))
 		{
-			PlayerLoseLife(player, gameAudio.hit);
+			PlayerCrash(player, gameAudio.hit);
 		}
 
 		PlayerPowerUpUpdate(player, delta);
@@ -380,6 +384,22 @@ namespace rd
 			Fade(player.color, player.bonusTimer / BONUS_TEXT_DURATION));
 	}
 
+	static void PlayerCrash(Player& player, Sound sound)
+	{
+		//EL ESCUDO AGUANTA UN CHOQUE: SE ROMPE, REBOTA Y QUEDA INVULNERABLE UN MOMENTO
+		if (PlayerHasPowerUp(player, PowerUpType::Shield))
+		{
+			PlaySound(sound);
+			player.activePowerUp = PowerUpType::None;
+			player.velocity = player.jumpForce;
+			player.invulnerableTimer = SHIELD_INVULNERABLE_DURATION;
+		}
+		else
+		{
+			PlayerLoseLife(player, sound);
+		}
+	}
+
 	static void PlayerLoseLife(Player& player, Sound sound)
 	{
 		PlaySound(sound);
@@ -408,6 +428,17 @@ namespace rd
 		if (!isBlinkingOff)
 		{
 			DrawRectangleV(player.position, player.size, player.color);
+		}
+
+		if (PlayerHasPowerUp(player, PowerUpType::Shield))
+		{
+			Vector2 center = { player.position.x + player.size.x / 2, player.position.y + player.size.y / 2 };
+			float radius = player.size.x * SHIELD_RADIUS_SCALE;
+
+			for (int i = 0; i < SHIELD_RINGS; i++)
+			{
+				DrawCircleLinesV(center, radius + static_cast<float>(i), GetPowerUpInfo(PowerUpType::Shield).color);
+			}
 		}
 	}
 

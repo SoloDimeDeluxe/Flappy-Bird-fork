@@ -15,7 +15,8 @@ namespace rd
 	static const PowerUpInfo POWER_UPS_INFO[static_cast<int>(PowerUpType::Count)] =
 	{
 		{ "", WHITE, 0.0f }, //None
-		{ "x2 POINTS", GOLD, 6.0f } //DoublePoints
+		{ "x2 POINTS", GOLD, 6.0f }, //DoublePoints
+		{ "SHIELD", SKYBLUE, 8.0f } //Shield
 	};
 
 	static PowerUp powerUps[MAX_POWER_UPS];

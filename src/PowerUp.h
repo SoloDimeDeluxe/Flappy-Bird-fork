@@ -10,6 +10,7 @@ namespace rd
 	{
 		None = 0,
 		DoublePoints,
+		Shield,
 		Count
 	};
 

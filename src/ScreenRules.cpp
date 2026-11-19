@@ -18,7 +18,7 @@ namespace rd
 	static const int CONTROLS_LINES_AMOUNT = 2;
 	static const int TWO_PLAYERS_LINES_AMOUNT = 3;
 	static const int DIFFICULTY_LINES_AMOUNT = 1;
-	static const int POWER_UPS_LINES_AMOUNT = 2;
+	static const int POWER_UPS_LINES_AMOUNT = 3;
 
 	static const char* HOW_TO_PLAY_LINES[HOW_TO_PLAY_LINES_AMOUNT] =
 	{
@@ -48,7 +48,8 @@ namespace rd
 	static const char* POWER_UPS_LINES[POWER_UPS_LINES_AMOUNT] =
 	{
 		"In 2 players mode some pipes bring a power-up. Fly through it to grab it",
-		"x2 POINTS (yellow): every point you get counts double for 6 seconds"
+		"x2 POINTS (yellow): every point you get counts double for 6 seconds",
+		"SHIELD (blue): saves you from one crash. Lasts 8 seconds"
 	};
 
 	static float SectionDraw(Font font, const char* title, const char* lines[], int linesAmount, float positionY);
