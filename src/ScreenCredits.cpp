@@ -34,9 +34,9 @@ namespace rd
 		{ "raylib 6.2 - www.raylib.com", 610.0f, NAME_FONT_SIZE, BLACK }
 	};
 
-	void CreditsInit()
+	void CreditsUpdate()
 	{
-		IsMousePressingBackButton();
+		BackButtonUpdate();
 	}
 
 	void CreditsDraw(Font font)

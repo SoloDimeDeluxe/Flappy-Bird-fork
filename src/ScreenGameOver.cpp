@@ -30,18 +30,18 @@ namespace rd
 		gameOverTimer = GAME_OVER_DELAY;
 		currentScreen = Screen::GameOver;
 		PlaySound(gameAudio.gameOver);
+
+		ButtonSetup(continueGame, CONTINUE_BUTTON_POSITION_Y);
+		ButtonSetup(backToMenu, CONTINUE_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION);
 	}
 
-	void GameOverInit(float delta)
+	void GameOverUpdate(float delta)
 	{
 		if (gameOverTimer > 0.0f)
 		{
 			gameOverTimer -= delta;
 			return;
 		}
-
-		ButtonSetup(continueGame, CONTINUE_BUTTON_POSITION_Y);
-		ButtonSetup(backToMenu, CONTINUE_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION);
 
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{

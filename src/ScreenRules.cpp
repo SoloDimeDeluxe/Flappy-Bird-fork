@@ -54,9 +54,9 @@ namespace rd
 
 	static float SectionDraw(Font font, const char* title, const char* lines[], int linesAmount, float positionY);
 
-	void RulesInit()
+	void RulesUpdate()
 	{
-		IsMousePressingBackButton();
+		BackButtonUpdate();
 	}
 
 	void RulesDraw(Font font)

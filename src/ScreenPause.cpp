@@ -34,7 +34,7 @@ namespace rd
 	void PauseUpdate()
 	{
 		PauseCheckInput();
-		IsMousePressingBackButton();
+		BackButtonUpdate();
 	}
 
 	void PauseDraw(Font font)

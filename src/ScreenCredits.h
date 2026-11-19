@@ -4,6 +4,6 @@
 
 namespace rd
 {
-	void CreditsInit();
+	void CreditsUpdate();
 	void CreditsDraw(Font font);
 }

@@ -38,8 +38,7 @@ namespace rd
 		switch (currentScreen)
 		{
 		case Screen::Menu:
-			MenuInit();
-			ParallaxInit();
+			MenuUpdate();
 			break;
 		case Screen::Play:
 			ParallaxUpdate(delta);
@@ -65,16 +64,16 @@ namespace rd
 				PlayerUpdate(delta);
 			}
 
-			IsMousePressingBackButton(); //VOLVER AL MENU
+			BackButtonUpdate(); //VOLVER AL MENU
 			PauseCheckInput();
 			break;
 		case Screen::Rules:
-			RulesInit();
+			RulesUpdate();
 			break;
 		case Screen::Settings:
 			break;
 		case Screen::Credits:
-			CreditsInit();
+			CreditsUpdate();
 			break;
 		case Screen::Exit:
 			ExitUpdate(gameIsRunning);
@@ -83,7 +82,7 @@ namespace rd
 			PauseUpdate();
 			break;
 		case Screen::GameOver:
-			GameOverInit(delta);
+			GameOverUpdate(delta);
 			break;
 		default:
 			break;

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "GameAudio.h"
+#include "Parallax.h"
 
 namespace rd
 {
@@ -55,7 +56,7 @@ namespace rd
 		return CheckCollisionPointRec(GetMousePosition(), buttonRectangle);
 	}
 
-	void IsMousePressed()
+	void MenuButtonsUpdate()
 	{
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
@@ -66,6 +67,7 @@ namespace rd
 				isTwoPlayers = false;
 				PlayerInit();
 				ObstacleInit();
+				ParallaxInit();
 				CountdownStart(); //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
@@ -76,6 +78,7 @@ namespace rd
 				isTwoPlayers = true;
 				PlayerInit();
 				ObstacleInit();
+				ParallaxInit();
 				CountdownStart(); //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
@@ -96,7 +99,7 @@ namespace rd
 		}
 	}
 
-	void IsMousePressingBackButton()
+	void BackButtonUpdate()
 	{
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{

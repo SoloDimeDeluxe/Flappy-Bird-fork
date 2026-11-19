@@ -19,8 +19,8 @@ namespace rd
 	void ButtonSetup(Button& button, float positionY);
 	bool IsMouseOverButton(const Button& button);
 
-	void IsMousePressed();
-	void IsMousePressingBackButton();
+	void MenuButtonsUpdate();
+	void BackButtonUpdate();
 
 	void BackButtonDraw();
 	void ButtonDraw();

@@ -5,6 +5,6 @@
 namespace rd
 {
 	void GameOverStart();
-	void GameOverInit(float delta);
+	void GameOverUpdate(float delta);
 	void GameOverDraw(Font font);
 }

@@ -4,6 +4,6 @@
 
 namespace rd
 {
-	void MenuInit();
+	void MenuUpdate();
 	void MenuDraw(Font font);
 }

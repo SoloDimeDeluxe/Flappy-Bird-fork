@@ -8,6 +8,7 @@
 #include "Obstacle.h"
 #include "Parallax.h"
 #include "GameAudio.h"
+#include "Button.h"
 
 namespace rd
 {
@@ -40,6 +41,7 @@ namespace rd
 
 		PlayerInit();
 		ObstacleInit();
+		ButtonInit(); //LAS POSICIONES DE LOS BOTONES NO CAMBIAN, ALCANZA CON PREPARARLOS UNA VEZ
 
 		while (!WindowShouldClose() && gameIsRunning)
 		{

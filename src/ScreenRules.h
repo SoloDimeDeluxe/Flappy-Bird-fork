@@ -4,6 +4,6 @@
 
 namespace rd
 {
-	void RulesInit();
+	void RulesUpdate();
 	void RulesDraw(Font font);
 }

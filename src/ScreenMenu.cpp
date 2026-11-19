@@ -11,10 +11,9 @@ namespace rd
 	static const float VERSION_FONT_SIZE = 40.0f;
 	static const float VERSION_SPACING = 1.0f;
 
-	void MenuInit()
+	void MenuUpdate()
 	{
-		ButtonInit();
-		IsMousePressed();
+		MenuButtonsUpdate();
 	}
 
 	void MenuDraw(Font font)
