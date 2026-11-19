@@ -8,8 +8,8 @@ namespace rd
 {
 	static const float TITLE_FONT_SIZE = 110.0f;
 	static const float TITLE_POSITION_Y = 50.0f;
-	static const char* VERSION_TEXT = "v1.0";
-	static const float VERSION_MARGIN = 15.0f; //DISTANCIA AL BORDE DE LA PANTALLA
+	static const char* VERSION_TEXT = "v1.1";
+	static const float VERSION_MARGIN = 15.0f;
 	static const float VERSION_FONT_SIZE = 40.0f;
 	static const float VERSION_SPACING = 1.0f;
 
