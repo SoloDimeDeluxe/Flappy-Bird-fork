@@ -9,6 +9,7 @@ namespace rd
 	enum class PowerUpType
 	{
 		None = 0,
+		DoublePoints,
 		Count
 	};
 

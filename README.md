@@ -28,6 +28,7 @@ The orange arrow at the top left corner goes back to the main menu.
 - Rules screen
 - Bonus points for passing close to the edge of the gap
 - 3 lives per player in 2 players mode
+- Power-ups in 2 players mode: **x2 POINTS** (every point counts double for 6 seconds)
 - Pipes with two gaps and more speed after 10 points
 - Score, best score and winner screen
 - 2 music tracks (menu and gameplay) and 7 sound effects

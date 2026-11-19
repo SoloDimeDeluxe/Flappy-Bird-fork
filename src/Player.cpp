@@ -42,6 +42,8 @@ namespace rd
 	static const float BONUS_FONT_SIZE = 30.0f;
 	static const float BONUS_OFFSET_Y = 65.0f;
 
+	static const int DOUBLE_POINTS_MULTIPLIER = 2;
+
 	Player bird;
 	Player birdTwo;
 	bool isTwoPlayers = false;
@@ -52,6 +54,7 @@ namespace rd
 	static void PlayerMovement(Player& player, float delta);
 	static void PlayerLabelDraw(Font font, const Player& player, const char* label);
 	static void CheckCloseBonus(Player& player);
+	static int GetPointsMultiplier(const Player& player);
 	static void BonusTextDraw(Font font, const Player& player);
 	static void PlayerLoseLife(Player& player, Sound sound);
 	static void PlayerBodyDraw(const Player& player);
@@ -71,6 +74,7 @@ namespace rd
 		bird.aliveTime = 0.0f;
 		bird.closestGapDistance = -1.0f;
 		bird.lastBonus = 0;
+		bird.isLastBonusPerfect = false;
 		bird.bonusTimer = 0.0f;
 		bird.lives = isTwoPlayers ? TWO_PLAYERS_LIVES : 1;
 		bird.invulnerableTimer = 0.0f;
@@ -226,11 +230,11 @@ namespace rd
 
 			if (bird.isAlive)
 			{
-				bird.score++;
+				bird.score += GetPointsMultiplier(bird);
 			}
 			if (birdTwo.isAlive)
 			{
-				birdTwo.score++;
+				birdTwo.score += GetPointsMultiplier(birdTwo);
 			}
 
 			CheckCloseBonus(bird);
@@ -341,6 +345,8 @@ namespace rd
 
 		if (bonus > 0)
 		{
+			player.isLastBonusPerfect = bonus == PERFECT_BONUS;
+			bonus *= GetPointsMultiplier(player);
 			player.score += bonus;
 			player.lastBonus = bonus;
 			player.bonusTimer = BONUS_TEXT_DURATION;
@@ -349,6 +355,11 @@ namespace rd
 
 		//EL SIGUIENTE CANIO EMPIEZA DE CERO
 		player.closestGapDistance = -1.0f;
+	}
+
+	static int GetPointsMultiplier(const Player& player)
+	{
+		return PlayerHasPowerUp(player, PowerUpType::DoublePoints) ? DOUBLE_POINTS_MULTIPLIER : 1;
 	}
 
 	static void BonusTextDraw(Font font, const Player& player)
@@ -360,7 +371,7 @@ namespace rd
 
 		//EL TEXTO SUBE Y SE VA DESVANECIENDO
 		float progress = 1.0f - player.bonusTimer / BONUS_TEXT_DURATION;
-		const char* bonusText = player.lastBonus == PERFECT_BONUS ? "+2 PERFECT!" : "+1 CLOSE!";
+		const char* bonusText = TextFormat("+%i %s", player.lastBonus, player.isLastBonusPerfect ? "PERFECT!" : "CLOSE!");
 		Vector2 textSize = MeasureTextEx(font, bonusText, BONUS_FONT_SIZE, TEXT_SPACING);
 		Vector2 textPosition = { player.position.x + (player.size.x - textSize.x) / 2,
 			player.position.y - BONUS_OFFSET_Y - BONUS_TEXT_RISE * progress };

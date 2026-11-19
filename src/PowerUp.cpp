@@ -14,7 +14,8 @@ namespace rd
 	//DATOS DE CADA POWER-UP, EN EL MISMO ORDEN QUE EL ENUM
 	static const PowerUpInfo POWER_UPS_INFO[static_cast<int>(PowerUpType::Count)] =
 	{
-		{ "", WHITE, 0.0f } //None
+		{ "", WHITE, 0.0f }, //None
+		{ "x2 POINTS", GOLD, 6.0f } //DoublePoints
 	};
 
 	static PowerUp powerUps[MAX_POWER_UPS];
