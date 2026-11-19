@@ -9,18 +9,9 @@ namespace rd
 {
 	static const float MENU_BUTTON_WIDTH = 280.0f;
 	static const float MENU_BUTTON_HEIGHT = 80.0f;
-	static const float MENU_BUTTON_TEXT_OFFSET_Y = 15.0f;
-	static const float MENU_BUTTON_TEXT_SIZE = 40.0f;
 	static const float MENU_BUTTON_FONT_SIZE = 60.0f;
 	static const float MENU_BUTTON_SPACING = 2.0f;
 	static const float FIRST_MENU_BUTTON_POSITION_Y = 195.0f;
-
-	//PARA QUE EL TEXTO QUEDE CENTRADO EN CADA BOTON
-	static const float PLAY_TEXT_OFFSET_X = 30.0f;
-	static const float PLAY_TWO_TEXT_OFFSET_X = 13.0f;
-	static const float RULES_TEXT_OFFSET_X = 70.0f;
-	static const float CREDITS_TEXT_OFFSET_X = 45.0f;
-	static const float EXIT_TEXT_OFFSET_X = 90.0f;
 
 	static const float BACK_BUTTON_SIZE = 70.0f;
 	static const float ARROW_MARGIN = 18.0f;
@@ -34,11 +25,11 @@ namespace rd
 
 	void ButtonInit()
 	{
-		ButtonSetup(play, FIRST_MENU_BUTTON_POSITION_Y, PLAY_TEXT_OFFSET_X);
-		ButtonSetup(playTwo, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION, PLAY_TWO_TEXT_OFFSET_X);
-		ButtonSetup(rules, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 2, RULES_TEXT_OFFSET_X);
-		ButtonSetup(credits, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 3, CREDITS_TEXT_OFFSET_X);
-		ButtonSetup(exit, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 4, EXIT_TEXT_OFFSET_X);
+		ButtonSetup(play, FIRST_MENU_BUTTON_POSITION_Y);
+		ButtonSetup(playTwo, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION);
+		ButtonSetup(rules, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 2);
+		ButtonSetup(credits, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 3);
+		ButtonSetup(exit, FIRST_MENU_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION * 4);
 
 		back.position.x = 0;
 		back.position.y = 0;
@@ -46,34 +37,29 @@ namespace rd
 		back.size.y = BACK_BUTTON_SIZE;
 	}
 
-	void ButtonSetup(Button& button, float positionY, float textOffsetX)
+	void ButtonSetup(Button& button, float positionY)
 	{
 		button.position.x = MENU_BUTTON_POSITION_X;
 		button.position.y = positionY;
-		button.textPosition.x = MENU_BUTTON_POSITION_X + textOffsetX;
-		button.textPosition.y = positionY + MENU_BUTTON_TEXT_OFFSET_Y;
-		button.textSize = MENU_BUTTON_TEXT_SIZE;
 		button.size.y = MENU_BUTTON_HEIGHT; //height
 		button.size.x = MENU_BUTTON_WIDTH; //width
 		button.fontSize = MENU_BUTTON_FONT_SIZE;
 		button.spacing = MENU_BUTTON_SPACING;
 	}
 
-	bool CheckCollisionMouseButton(Vector2 mousePosition, float buttonX,
-		float buttonY, float buttonHeight, float buttonWidth)
+	bool IsMouseOverButton(const Button& button)
 	{
-		return buttonX <= mousePosition.x && buttonX + buttonWidth >= mousePosition.x
-			&& mousePosition.y >= buttonY && mousePosition.y <= buttonY + buttonHeight;
+		//SE ARMA EL RECTANGULO DEL BOTON PARA USAR LA COLISION QUE YA TRAE RAYLIB
+		Rectangle buttonRectangle = { button.position.x, button.position.y, button.size.x, button.size.y };
+
+		return CheckCollisionPointRec(GetMousePosition(), buttonRectangle);
 	}
 
 	void IsMousePressed()
 	{
-		Vector2 mousePosition = GetMousePosition();
-
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
-			if (CheckCollisionMouseButton(mousePosition, play.position.x,
-				play.position.y, play.size.y, play.size.x))
+			if (IsMouseOverButton(play))
 			{
 				//REINICIA LA PARTIDA CADA VEZ QUE SE ENTRA A JUGAR
 				PlaySound(gameAudio.click);
@@ -83,8 +69,7 @@ namespace rd
 				CountdownStart(); //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
-			else if (CheckCollisionMouseButton(mousePosition, playTwo.position.x,
-				playTwo.position.y, playTwo.size.y, playTwo.size.x))
+			else if (IsMouseOverButton(playTwo))
 			{
 				//MODO 2 JUGADORES (SE SETEA ANTES DEL INIT PORQUE EL INIT LO USA)
 				PlaySound(gameAudio.click);
@@ -94,19 +79,17 @@ namespace rd
 				CountdownStart(); //CUENTA REGRESIVA SOLO AL ENTRAR DESDE EL MENU
 				currentScreen = Screen::Play;
 			}
-			else if (CheckCollisionMouseButton(mousePosition, rules.position.x,
-				rules.position.y, rules.size.y, rules.size.x))
+			else if (IsMouseOverButton(rules))
 			{
 				PlaySound(gameAudio.click);
 				currentScreen = Screen::Rules;
 			}
-			else if (CheckCollisionMouseButton(mousePosition, credits.position.x,
-				credits.position.y, credits.size.y, credits.size.x))
+			else if (IsMouseOverButton(credits))
 			{
 				PlaySound(gameAudio.click);
 				currentScreen = Screen::Credits;
 			}
-			else if (CheckCollisionMouseButton(mousePosition, exit.position.x, exit.position.y, exit.size.y, exit.size.x))
+			else if (IsMouseOverButton(exit))
 			{
 				currentScreen = Screen::Exit;
 			}
@@ -115,11 +98,9 @@ namespace rd
 
 	void IsMousePressingBackButton()
 	{
-		Vector2 mousePosition = GetMousePosition();
-
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
-			if (CheckCollisionMouseButton(mousePosition, back.position.x, back.position.y, back.size.y, back.size.x))
+			if (IsMouseOverButton(back))
 			{
 				PlaySound(gameAudio.click);
 				currentScreen = Screen::Menu;
@@ -129,11 +110,9 @@ namespace rd
 
 	void BackButtonDraw()
 	{
-		Vector2 mousePosition = GetMousePosition();
-
 		DrawRectangleV(back.position, back.size, ORANGE);
 
-		if (CheckCollisionMouseButton(mousePosition, back.position.x, back.position.y, back.size.y, back.size.x))
+		if (IsMouseOverButton(back))
 		{
 			DrawRectangleV(back.position, back.size, YELLOW);
 		}
@@ -147,8 +126,6 @@ namespace rd
 
 	void ButtonDraw()
 	{
-		Vector2 mousePosition = GetMousePosition();
-
 		//DIBUJO BOTONES
 		DrawRectangleV(play.position, play.size, ORANGE);
 		DrawRectangleV(playTwo.position, playTwo.size, ORANGE);
@@ -156,28 +133,23 @@ namespace rd
 		DrawRectangleV(credits.position, credits.size, ORANGE);
 		DrawRectangleV(exit.position, exit.size, ORANGE);
 
-		if (CheckCollisionMouseButton(mousePosition, play.position.x,
-			play.position.y, play.size.y, play.size.x))
+		if (IsMouseOverButton(play))
 		{
 			DrawRectangleV(play.position, play.size, YELLOW);
 		}
-		else if (CheckCollisionMouseButton(mousePosition, playTwo.position.x,
-			playTwo.position.y, playTwo.size.y, playTwo.size.x))
+		else if (IsMouseOverButton(playTwo))
 		{
 			DrawRectangleV(playTwo.position, playTwo.size, YELLOW);
 		}
-		else if (CheckCollisionMouseButton(mousePosition, rules.position.x,
-			rules.position.y, rules.size.y, rules.size.x))
+		else if (IsMouseOverButton(rules))
 		{
 			DrawRectangleV(rules.position, rules.size, YELLOW);
 		}
-		else if (CheckCollisionMouseButton(mousePosition, credits.position.x,
-			credits.position.y, credits.size.y, credits.size.x))
+		else if (IsMouseOverButton(credits))
 		{
 			DrawRectangleV(credits.position, credits.size, YELLOW);
 		}
-		else if (CheckCollisionMouseButton(mousePosition, exit.position.x,
-			exit.position.y, exit.size.y, exit.size.x))
+		else if (IsMouseOverButton(exit))
 		{
 			DrawRectangleV(exit.position, exit.size, YELLOW);
 		}
@@ -185,10 +157,20 @@ namespace rd
 
 	void ButtonTextDraw(Font font)
 	{
-		DrawTextEx(font, "1 PLAYER", play.textPosition, play.fontSize, play.spacing, WHITE);
-		DrawTextEx(font, "2 PLAYERS", playTwo.textPosition, playTwo.fontSize, playTwo.spacing, WHITE);
-		DrawTextEx(font, "RULES", rules.textPosition, rules.fontSize, rules.spacing, WHITE);
-		DrawTextEx(font, "CREDITS", credits.textPosition, credits.fontSize, credits.spacing, WHITE);
-		DrawTextEx(font, "EXIT", exit.textPosition, exit.fontSize, exit.spacing, WHITE);
+		ButtonLabelDraw(font, play, "1 PLAYER");
+		ButtonLabelDraw(font, playTwo, "2 PLAYERS");
+		ButtonLabelDraw(font, rules, "RULES");
+		ButtonLabelDraw(font, credits, "CREDITS");
+		ButtonLabelDraw(font, exit, "EXIT");
+	}
+
+	void ButtonLabelDraw(Font font, const Button& button, const char* text)
+	{
+		//SE MIDE EL TEXTO PARA CENTRARLO EN EL BOTON, ASI NO HACE FALTA UN OFFSET A MANO POR CADA BOTON
+		Vector2 textSize = MeasureTextEx(font, text, button.fontSize, button.spacing);
+		Vector2 textPosition = { button.position.x + (button.size.x - textSize.x) / 2,
+			button.position.y + (button.size.y - textSize.y) / 2 };
+
+		DrawTextEx(font, text, textPosition, button.fontSize, button.spacing, WHITE);
 	}
 }

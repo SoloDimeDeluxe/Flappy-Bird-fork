@@ -17,8 +17,6 @@ namespace rd
 	static const float GAME_OVER_DELAY = 1.0f; //SEGUNDOS ANTES DE MOSTRAR EL CARTEL
 	static const float BACKGROUND_ALPHA = 0.6f;
 	static const float CONTINUE_BUTTON_POSITION_Y = 380.0f;
-	static const float CONTINUE_TEXT_OFFSET_X = 20.0f;
-	static const float BACK_TO_MENU_TEXT_OFFSET_X = 76.0f;
 
 	static float gameOverTimer = 0.0f;
 
@@ -42,15 +40,12 @@ namespace rd
 			return;
 		}
 
-		ButtonSetup(continueGame, CONTINUE_BUTTON_POSITION_Y, CONTINUE_TEXT_OFFSET_X);
-		ButtonSetup(backToMenu, CONTINUE_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION, BACK_TO_MENU_TEXT_OFFSET_X);
-
-		Vector2 mousePosition = GetMousePosition();
+		ButtonSetup(continueGame, CONTINUE_BUTTON_POSITION_Y);
+		ButtonSetup(backToMenu, CONTINUE_BUTTON_POSITION_Y + MENU_BUTTON_SEPARATION);
 
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
-			if (CheckCollisionMouseButton(mousePosition, continueGame.position.x,
-				continueGame.position.y, continueGame.size.y, continueGame.size.x))
+			if (IsMouseOverButton(continueGame))
 			{
 				//SE REINICIA LA PARTIDA EN EL MISMO MODO (1 O 2 JUGADORES)
 				PlaySound(gameAudio.click);
@@ -58,8 +53,7 @@ namespace rd
 				ObstacleInit();
 				currentScreen = Screen::Play;
 			}
-			else if (CheckCollisionMouseButton(mousePosition, backToMenu.position.x,
-				backToMenu.position.y, backToMenu.size.y, backToMenu.size.x))
+			else if (IsMouseOverButton(backToMenu))
 			{
 				PlaySound(gameAudio.click);
 				currentScreen = Screen::Menu;
@@ -74,8 +68,6 @@ namespace rd
 			return;
 		}
 
-		Vector2 mousePosition = GetMousePosition();
-
 		//FONDO OSCURO TRANSPARENTE ARRIBA DEL JUEGO CONGELADO
 		DrawRectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, Fade(BLACK, BACKGROUND_ALPHA));
 
@@ -86,19 +78,17 @@ namespace rd
 		DrawRectangleV(continueGame.position, continueGame.size, ORANGE);
 		DrawRectangleV(backToMenu.position, backToMenu.size, ORANGE);
 
-		if (CheckCollisionMouseButton(mousePosition, continueGame.position.x,
-			continueGame.position.y, continueGame.size.y, continueGame.size.x))
+		if (IsMouseOverButton(continueGame))
 		{
 			DrawRectangleV(continueGame.position, continueGame.size, YELLOW);
 		}
-		else if (CheckCollisionMouseButton(mousePosition, backToMenu.position.x,
-			backToMenu.position.y, backToMenu.size.y, backToMenu.size.x))
+		else if (IsMouseOverButton(backToMenu))
 		{
 			DrawRectangleV(backToMenu.position, backToMenu.size, YELLOW);
 		}
 
-		DrawTextEx(font, "CONTINUE", continueGame.textPosition, continueGame.fontSize, continueGame.spacing, WHITE);
-		DrawTextEx(font, "MENU", backToMenu.textPosition, backToMenu.fontSize, backToMenu.spacing, WHITE);
+		ButtonLabelDraw(font, continueGame, "CONTINUE");
+		ButtonLabelDraw(font, backToMenu, "MENU");
 	}
 
 	static void ResultDraw(Font font)

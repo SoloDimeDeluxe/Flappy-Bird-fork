@@ -8,8 +8,6 @@ namespace rd
 	{
 		Vector2 position;
 		Vector2 size;
-		Vector2 textPosition;
-		float textSize;
 		float fontSize;
 		float spacing;
 	};
@@ -18,9 +16,8 @@ namespace rd
 	const float MENU_BUTTON_SEPARATION = 95.0f;
 
 	void ButtonInit();
-	void ButtonSetup(Button& button, float positionY, float textOffsetX);
-	bool CheckCollisionMouseButton(Vector2 mousePosition, float buttonX,
-		float buttonY, float buttonHeight, float buttonWidth);
+	void ButtonSetup(Button& button, float positionY);
+	bool IsMouseOverButton(const Button& button);
 
 	void IsMousePressed();
 	void IsMousePressingBackButton();
@@ -28,4 +25,5 @@ namespace rd
 	void BackButtonDraw();
 	void ButtonDraw();
 	void ButtonTextDraw(Font font);
+	void ButtonLabelDraw(Font font, const Button& button, const char* text);
 }
