@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 
-#include "Collision.h"
 #include "Player.h"
 
 namespace rd
@@ -85,10 +84,14 @@ namespace rd
 
 	PowerUpType PowerUpCheckPickup(Vector2 position, Vector2 size)
 	{
+		//SE ARMA EL RECTANGULO DEL JUGADOR PARA USAR LA COLISION QUE YA TRAE RAYLIB
+		Rectangle playerRectangle = { position.x, position.y, size.x, size.y };
+
 		for (int i = 0; i < MAX_POWER_UPS; i++)
 		{
-			if (powerUps[i].isActive && CheckRectangleCollision(position, size,
-				powerUps[i].position, { POWER_UP_SIZE, POWER_UP_SIZE }))
+			Rectangle powerUpRectangle = { powerUps[i].position.x, powerUps[i].position.y, POWER_UP_SIZE, POWER_UP_SIZE };
+
+			if (powerUps[i].isActive && CheckCollisionRecs(playerRectangle, powerUpRectangle))
 			{
 				powerUps[i].isActive = false;
 				return powerUps[i].type;

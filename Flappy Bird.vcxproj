@@ -171,7 +171,6 @@
   <ItemGroup>
     <ClCompile Include="src\ScreenGameOver.cpp" />
     <ClCompile Include="src\Button.cpp" />
-    <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Obstacle.cpp" />
     <ClCompile Include="src\Parallax.cpp" />
@@ -189,7 +188,6 @@
   <ItemGroup>
     <ClInclude Include="src\ScreenGameOver.h" />
     <ClInclude Include="src\Button.h" />
-    <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\Obstacle.h" />
     <ClInclude Include="src\Parallax.h" />
     <ClInclude Include="src\Player.h" />

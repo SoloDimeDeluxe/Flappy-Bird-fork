@@ -3,7 +3,6 @@
 #include <cstdlib>
 
 #include "RunGame.h"
-#include "Collision.h"
 #include "ScreenManager.h"
 #include "PowerUp.h"
 
@@ -123,6 +122,8 @@ namespace rd
 
 	bool ObstacleCheckCollision(Vector2 position, Vector2 size)
 	{
+		//SE ARMA EL RECTANGULO DEL JUGADOR PARA USAR LA COLISION QUE YA TRAE RAYLIB
+		Rectangle playerRectangle = { position.x, position.y, size.x, size.y };
 		Rectangle segments[MAX_SEGMENTS];
 
 		for (int i = 0; i < MAX_OBSTACLES; i++)
@@ -131,8 +132,7 @@ namespace rd
 
 			for (int j = 0; j < segmentsAmount; j++)
 			{
-				if (CheckRectangleCollision(position, size, { segments[j].x, segments[j].y },
-					{ segments[j].width, segments[j].height }))
+				if (CheckCollisionRecs(playerRectangle, segments[j]))
 				{
 					return true;
 				}
