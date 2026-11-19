@@ -69,11 +69,8 @@ namespace rd
 	{
 		bird.position.x = PLAYER_START_POSITION_X;
 		bird.position.y = PLAYER_ONE_START_POSITION_Y;
-		bird.direction.x = 0;
-		bird.direction.y = 0;
 		bird.size.x = PLAYER_SIZE;
 		bird.size.y = PLAYER_SIZE;
-		bird.rotation = 0;
 		bird.score = 0;
 		bird.aliveTime = 0.0f;
 		bird.closestGapDistance = -1.0f;

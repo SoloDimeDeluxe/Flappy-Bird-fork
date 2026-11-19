@@ -9,7 +9,6 @@ namespace rd
 		Menu = 0,
 		Play,
 		Rules,
-		Settings,
 		Credits,
 		Exit,
 		Pause,

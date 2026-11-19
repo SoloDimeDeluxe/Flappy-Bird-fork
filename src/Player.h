@@ -9,11 +9,8 @@ namespace rd
 	struct Player
 	{
 		Vector2 position = { 0,0 };
-		Vector2 direction = { 0,0 };
 		Vector2 size = { 0,0 };
 		int score = 0;
-		float rotation = 0.0f;
-		float radius = 0.0f;
 		float velocity = 0.0f;
 		float jumpForce = 0.0f;
 		bool isAlive = true;

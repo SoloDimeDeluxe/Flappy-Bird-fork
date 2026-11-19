@@ -70,8 +70,6 @@ namespace rd
 		case Screen::Rules:
 			RulesUpdate();
 			break;
-		case Screen::Settings:
-			break;
 		case Screen::Credits:
 			CreditsUpdate();
 			break;
@@ -116,8 +114,6 @@ namespace rd
 			break;
 		case Screen::Rules:
 			RulesDraw(font);
-			break;
-		case Screen::Settings:
 			break;
 		case Screen::Credits:
 			CreditsDraw(font);
