@@ -14,6 +14,7 @@ namespace rd
 	static const float PLAYER_SIZE = 50.0f;
 	static const float PLAYER_START_VELOCITY = 300.0f;
 	static const float PLAYER_JUMP_FORCE = -200.0f;
+	static const float GRAVITY = 500.0f;
 
 	static const float LABEL_FONT_SIZE = 30.0f;
 	static const float LABEL_OFFSET_Y = 30.0f;

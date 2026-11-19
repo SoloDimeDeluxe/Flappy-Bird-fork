@@ -1,3 +1,6 @@
 .vs/
 obj/
 bin/
+
+# ARCHIVOS LOCALES DE CADA USUARIO DE VISUAL STUDIO
+*.user

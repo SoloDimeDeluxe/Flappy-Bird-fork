@@ -35,8 +35,6 @@ namespace rd
 		PlayerTwo
 	};
 
-	const int GRAVITY = 500;
-
 	extern Player bird;
 	extern Player birdTwo;
 	extern bool isTwoPlayers;
